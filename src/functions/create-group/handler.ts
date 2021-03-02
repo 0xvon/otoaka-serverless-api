@@ -16,7 +16,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
     console.log(listChannelResponse);
 
     return formatJSONResponse({
-        message: listChannelResponse,
+        message: 'hello',
         event,
     });
 }
