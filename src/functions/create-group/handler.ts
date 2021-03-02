@@ -29,7 +29,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
 
         const s3PutObjRes = await s3Client.upload(thumbnailUrl, event.body.youtube_channel_id);
         if (s3PutObjRes.ETag) {
-            const artworkURL = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${event.body.youtube_channel_id}.png`;
+            const artworkURL = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${event.body.youtube_channel_id}.jpeg`;
             const req: CreateGroupRequest = {
                 name: event.body.name,
                 englishName: null,
