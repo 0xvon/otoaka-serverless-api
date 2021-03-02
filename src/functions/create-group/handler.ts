@@ -23,6 +23,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
 
     if (listChannelResponse.items) {
         const item = listChannelResponse.items[0];
+        console.log(item);
         const biography = item.snippet.description;
         const thumbnailUrl = item.snippet.thumbnails.high.url ?? '';
 

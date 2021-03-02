@@ -1,9 +1,8 @@
-import { S3 } from "aws-sdk";
-
 import * as AWS from 'aws-sdk';
+const axios = require('axios');
 
 export class S3Client {
-    s3: S3;
+    s3: AWS.S3;
     bucketName: string;
 
     constructor(bucketName: string) {
@@ -12,13 +11,15 @@ export class S3Client {
     }
 
     upload = async (imageUrl: string, key: string) => {
-        let requestBody = Buffer.from(imageUrl, 'base64');
+        const imageRes = await axios.get(imageUrl, {responseType: 'arraybuffer'});
+
+        console.log(imageUrl);
 
         const res = await this.s3.putObject({
-            Body: requestBody,
+            Body: Buffer.from(imageRes.data),
             Bucket: this.bucketName,
-            ContentType: 'image/png',
-            Key: `assets/imported/${key}.png`,
+            ContentType: 'image/jpeg',
+            Key: `assets/imported/${key}.jpeg`,
         }).promise()
 
         return res
