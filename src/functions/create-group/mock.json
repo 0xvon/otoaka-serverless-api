@@ -2,5 +2,5 @@
   "headers": {
     "Content-Type": "application/json"
   },
-  "body": "{\"name\": \"Frederic\"}"
+  "body": "{\"name\": \"MY FIRST STORY\",\"youtube_channel_id\": \"UCE721tjLVikhxeq-fW5hHGg\", \"twitter_id\": \"myfirststory_of\"}"
 }
