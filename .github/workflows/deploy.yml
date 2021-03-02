@@ -37,6 +37,7 @@ jobs:
                   ENDPOINT_URL: http://api-dev.rocketfor.band
                   AUTH_USER: ${{ secrets.AUTH_USER_DEV }}
                   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+                  S3_BUCKET: rocket-auth-dev-storage
 
             - name: deploy
               if: github.ref == 'refs/heads/master'
@@ -49,3 +50,4 @@ jobs:
                   ENDPOINT_URL: http://api.rocketfor.band
                   AUTH_USER: ${{ secrets.AUTH_USER }}
                   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+                  S3_BUCKET: rocket-auth-storage

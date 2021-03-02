@@ -20,5 +20,6 @@ export default {
         ENDPOINT_URL: process.env.ENDPOINT_URL,
         AUTH_USER: process.env.AUTH_USER,
         YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
+        S3_BUCKET: process.env.S3_BUCKET,
     },
 }
