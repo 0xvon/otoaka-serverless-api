@@ -9,7 +9,6 @@ import { S3Client } from './Clients/S3Client';
 import schema from './schema';
 
 const apiKey = process.env.YOUTUBE_API_KEY ?? '';
-const authUser = process.env.AUTH_USER ?? '';
 const endpointUrl = process.env.ENDPOINT_URL ?? '';
 const bucketName = process.env.S3_BUCKET ?? '';
 

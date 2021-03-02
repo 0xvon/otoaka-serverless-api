@@ -35,7 +35,6 @@ jobs:
                   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   ENDPOINT_URL: http://api-dev.rocketfor.band
-                  AUTH_USER: ${{ secrets.AUTH_USER_DEV }}
                   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
                   S3_BUCKET: rocket-auth-dev-storage
 
@@ -48,6 +47,5 @@ jobs:
                   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   ENDPOINT_URL: http://api.rocketfor.band
-                  AUTH_USER: ${{ secrets.AUTH_USER }}
                   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
                   S3_BUCKET: rocket-auth-storage
