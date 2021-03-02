@@ -34,7 +34,7 @@ export class APIClient {
             responseType: 'json',
         });
         
-        const res = await apiAxios.post('/groups', request);
+        const res = await apiAxios.post('/groups/master', request);
         return res;
     }
 }

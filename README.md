@@ -29,7 +29,7 @@ $ curl -X POST 'https://xxxx.execute-api.ap-northeast-1.amazonaws.com/prd/create
 ```
 or
 ```
-$ sls invoke -f signup --stage prd -p ./src/functions/signup/mock.json --log
+$ sls invoke -f createGroup --stage dev --aws-profile wod -p ./src/functions/create-group/mock.json --log
 ```
 
 output
