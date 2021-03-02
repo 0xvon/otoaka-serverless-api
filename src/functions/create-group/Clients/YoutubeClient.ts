@@ -1,5 +1,4 @@
 const axios = require('axios');
-// const request = require('request-promise');
 
 interface Props {
     apiKey: string;
