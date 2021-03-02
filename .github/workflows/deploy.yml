@@ -2,7 +2,7 @@ name: deploy serverless framework
 
 on:
     push:
-        branches: [master]
+        branches: ['*']
 
 jobs:
     deploy:
