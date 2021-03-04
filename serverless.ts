@@ -22,11 +22,11 @@ const serverlessConfiguration: AWS = {
         },
         customDomain: {
             hostsZoneId: 'Z065429716SVGDQANMG6Z',
-            domainName: 'serverless-${self:provider.stage}.rocketfor.band',
+            domainName: 'serverless.rocketfor.band',
             certificateName: '*.rocketfor.band',
             certificateArn: 'arn:aws:acm:us-east-1:960722127407:certificate/cb96c11f-08b0-4eef-b01c-b780ebc5ecc5',
             basePath: '',
-            stage: '${self:provider.stage}',
+            stage: 'prd',
             createRoute53Record: true
         },
     },
