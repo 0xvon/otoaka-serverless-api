@@ -2,7 +2,7 @@ name: deploy serverless framework
 
 on:
     push:
-        branches: [master]
+        branches: ['*']
 
 jobs:
     deploy:
@@ -34,9 +34,9 @@ jobs:
               env:
                   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  ENDPOINT_URL: ${{ secrets.ENDPOINT_URL_DEV }}
-                  AUTH_USER: ${{ secrets.AUTH_USER_DEV }}
+                  ENDPOINT_URL: http://api-dev.rocketfor.band
                   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+                  S3_BUCKET: rocket-auth-dev-storage
 
             - name: deploy
               if: github.ref == 'refs/heads/master'
@@ -46,6 +46,6 @@ jobs:
               env:
                   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  ENDPOINT_URL: ${{ secrets.ENDPOINT_URL }}
-                  AUTH_USER: ${{ secrets.AUTH_USER }}
+                  ENDPOINT_URL: http://api.rocketfor.band
                   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+                  S3_BUCKET: rocket-auth-storage
