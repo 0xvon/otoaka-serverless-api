@@ -50,11 +50,11 @@ const generatehtml = (ogp_url: string, title: string = 'ロケバン | 邦ロッ
     <meta content="${title}" property="twitter:title" />
     <meta content="${description}" property="twitter:description" />
     <meta content="${ogp_url}" property="twitter:image" />
-    <script type=”text/javascript”>
+    <script type="text/javascript">
         <!–
         setTimeout("link()", 0);
         function link(){
-            location.href='${redirectUrl}';
+            location.href="${redirectUrl}";
         }
         –>
     </script>
