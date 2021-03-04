@@ -8,6 +8,12 @@ import schema from './schema';
 const redirectUrl = process.env.REDIRECT_URL ?? '';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+    console.log(event);
+
+    const ogpUrl = event.queryStringParameters['ogp_url'] ?? '';
+    const title = event.queryStringParameters['title'] ?? 'some title';
+    console.log(title);
+
     return formatJSONResponse({
         status: 200,
         statusDescription: 'OK',
@@ -17,7 +23,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
                 value: 'text/html'
             }]
         },
-        body: generatehtml(event.body.ogp_url)
+        body: generatehtml(ogpUrl)
     });
 }
 
