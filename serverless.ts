@@ -20,11 +20,21 @@ const serverlessConfiguration: AWS = {
             layersDeploymentBucket: 'rocket-dev-lambda',
             dependenciesPath: './package.json',
         },
+        customDomain: {
+            hostsZoneId: 'Z065429716SVGDQANMG6Z',
+            domainName: 'serverless-${self:provider.stage}.rocketfor.band',
+            certificateName: '*.rocketfor.band',
+            certificateArn: 'arn:aws:acm:us-east-1:960722127407:certificate/cb96c11f-08b0-4eef-b01c-b780ebc5ecc5',
+            basePath: '',
+            stage: '${self:provider.stage}',
+            createRoute53Record: true
+        },
     },
     plugins: [
         'serverless-webpack',
         'serverless-layers',
         'serverless-add-api-key',
+        'serverless-domain-manager',
     ],
     provider: {
         name: 'aws',
