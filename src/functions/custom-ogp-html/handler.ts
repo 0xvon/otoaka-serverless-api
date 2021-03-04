@@ -5,7 +5,7 @@ import { formatJSONResponse, formatHTMLResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import schema from './schema';
 
-const redirectUrl = process.env.REDIRECT_URL ?? '';
+const redirectUrl = process.env.REDIRECT_URL ?? 'https://wall-of-death.com';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     console.log(event);
@@ -14,12 +14,11 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
     const title = event.queryStringParameters['title'] ?? 'some title';
     console.log(title);
 
-    return formatHTMLResponse(generatehtml(ogpUrl));
+    return formatHTMLResponse(generatehtml(ogpUrl, title));
 }
 
-const generatehtml = (ogp_url: string) => {
-    const title = 'ロケバン | ロック音楽シェアSNS';
-    const description = 'ロケバンで音楽をシェアしよう';
+const generatehtml = (ogp_url: string, title: string = 'ロケバン | 邦ロックシェアSNS') => {
+    const description = 'ロケバンで邦ロックを記録しよう';
     const facebookAppId = '313612986723470';
     const twitterId = '@wooruobudesu';
 
@@ -51,6 +50,14 @@ const generatehtml = (ogp_url: string) => {
     <meta content="${title}" property="twitter:title" />
     <meta content="${description}" property="twitter:description" />
     <meta content="${ogp_url}" property="twitter:image" />
+    <script type=”text/javascript”>
+        <!–
+        setTimeout("link()", 0);
+        function link(){
+            location.href='${redirectUrl}';
+        }
+        –>
+    </script>
 </head>
 <body>
 </body>

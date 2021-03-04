@@ -16,6 +16,6 @@ export default {
         },
     ],
     environment: {
-        REDIRECT_URL: process.env.REDIRECT_URL,
+        REDIRECT_URL: "https://apps.apple.com/jp/app/rocket-for-bands-ii/id1550896325",
     },
 }
