@@ -7,8 +7,11 @@ export default {
             http: {
                 method: 'get',
                 path: 'custom_ogp_html',
-            }
-        }
+                response: {
+                    'Content-Type': 'text/html',
+                },
+            },
+        },
     ],
     environment: {
         REDIRECT_URL: process.env.REDIRECT_URL,

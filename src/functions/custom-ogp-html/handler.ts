@@ -14,17 +14,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
     const title = event.queryStringParameters['title'] ?? 'some title';
     console.log(title);
 
-    return formatJSONResponse({
-        status: 200,
-        statusDescription: 'OK',
-        headers: {
-            'content-type': [{
-                key: 'Content-Type',
-                value: 'text/html'
-            }]
-        },
-        body: generatehtml(ogpUrl)
-    });
+    return generatehtml(ogpUrl);
 }
 
 const generatehtml = (ogp_url: string) => {
