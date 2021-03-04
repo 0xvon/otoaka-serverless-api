@@ -10,8 +10,8 @@ const redirectUrl = process.env.REDIRECT_URL ?? 'https://wall-of-death.com';
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     console.log(event);
 
-    const ogpUrl = event.queryStringParameters['ogp_url'] ?? 'ロケバン | 邦ロックシェアSNS';
-    const title = event.queryStringParameters['title'] ?? 'some title';
+    const ogpUrl = event.queryStringParameters['ogp_url'] ?? 'https://wall-of-death.com';
+    const title = event.queryStringParameters['title'] ?? 'ロケバン | 邦ロックシェアSNS';
     console.log(title);
 
     return formatHTMLResponse(generatehtml(ogpUrl, title));
