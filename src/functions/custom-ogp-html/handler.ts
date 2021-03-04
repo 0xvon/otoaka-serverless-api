@@ -1,7 +1,7 @@
 import 'source-map-support/register';
 
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
-import { formatJSONResponse } from '@libs/apiGateway';
+import { formatJSONResponse, formatHTMLResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import schema from './schema';
 
@@ -14,14 +14,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
     const title = event.queryStringParameters['title'] ?? 'some title';
     console.log(title);
 
-    return formatJSONResponse({
-        status: 200,
-        statusDescription: 'OK',
-        headers: {
-            'content-type': 'text/html',
-        },
-        body: generatehtml(ogpUrl),
-    });
+    return formatHTMLResponse(generatehtml(ogpUrl));
 }
 
 const generatehtml = (ogp_url: string) => {
