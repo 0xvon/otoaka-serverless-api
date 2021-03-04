@@ -18,10 +18,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         status: 200,
         statusDescription: 'OK',
         headers: {
-            'content-type': [{
-                key: 'Content-Type',
-                value: 'text/html'
-            }]
+            'content-type': 'text/html',
         },
         body: generatehtml(ogpUrl),
     });
