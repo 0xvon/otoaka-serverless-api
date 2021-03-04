@@ -10,7 +10,7 @@ export default {
                 path: 'custom_ogp_html',
                 request: {
                     schema: {
-                        'text/html': schema
+                        'application/json': schema
                     }
                 }
             }
