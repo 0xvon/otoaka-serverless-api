@@ -8,7 +8,9 @@ export default {
                 method: 'get',
                 path: 'custom_ogp_html',
                 response: {
-                    'Content-Type': 'text/html',
+                    headers: {
+                        'Content-Type': "'text/html'",
+                    },
                 },
             },
         },
