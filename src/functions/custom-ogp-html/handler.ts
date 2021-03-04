@@ -1,7 +1,7 @@
 import 'source-map-support/register';
 
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
-import { formatJSONResponse, formatHTMLResponse } from '@libs/apiGateway';
+import { formatHTMLResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import schema from './schema';
 
@@ -10,14 +10,14 @@ const redirectUrl = process.env.REDIRECT_URL ?? 'https://wall-of-death.com';
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     console.log(event);
 
-    const ogpUrl = event.queryStringParameters['ogp_url'] ?? '';
+    const ogpUrl = event.queryStringParameters['ogp_url'] ?? 'ロケバン | 邦ロックシェアSNS';
     const title = event.queryStringParameters['title'] ?? 'some title';
     console.log(title);
 
     return formatHTMLResponse(generatehtml(ogpUrl, title));
 }
 
-const generatehtml = (ogp_url: string, title: string = 'ロケバン | 邦ロックシェアSNS') => {
+const generatehtml = (ogp_url: string, title: string) => {
     const description = 'ロケバンで邦ロックを記録しよう';
     const facebookAppId = '313612986723470';
     const twitterId = '@wooruobudesu';
