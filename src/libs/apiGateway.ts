@@ -14,6 +14,9 @@ export const formatJSONResponse = (response: Record<string, unknown>) => {
 export const formatHTMLResponse = (response: string) => {
     return {
         statusCode: 200,
+        headers: {
+            'Content-Type': 'text/html',
+        },
         body: response
     }
 }
