@@ -23,7 +23,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
                 value: 'text/html'
             }]
         },
-        body: 
+        body: generatehtml(ogpUrl),
     });
 }
 
