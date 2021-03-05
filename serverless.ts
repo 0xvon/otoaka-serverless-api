@@ -7,6 +7,7 @@ const serverlessConfiguration: AWS = {
     service: 'rocket-serverless-api',
     frameworkVersion: '2',
     custom: {
+        stage: '${opt:stage, self:provider.stage}',
         webpack: {
             webpackConfig: './webpack.config.js',
             includeModules: true,
@@ -22,11 +23,11 @@ const serverlessConfiguration: AWS = {
         },
         customDomain: {
             hostsZoneId: 'Z065429716SVGDQANMG6Z',
-            domainName: 'serverless-${self:provider.stage}.rocketfor.band',
+            domainName: 'serverless-${self:custom.stage}.rocketfor.band',
             certificateName: '*.rocketfor.band',
             certificateArn: 'arn:aws:acm:us-east-1:960722127407:certificate/cb96c11f-08b0-4eef-b01c-b780ebc5ecc5',
             basePath: '',
-            stage: '${self:provider.stage}',
+            stage: '${self:custom.stage}',
             createRoute53Record: true
         },
     },
