@@ -80,7 +80,7 @@ export class APIClient {
         
         const res = await apiAxios.get('/external/groups');
         console.log(JSON.stringify(decycle(res)));
-        return res as Group[];
+        return res.data as Group[];
     }
 
     fetchLive = async (request: CreateLiveRequest) => {
