@@ -101,7 +101,7 @@ export class APIClient {
         });
         
         const res = await apiAxios.get('/external/test_pia_event_release', { params: params });
-        console.log(JSON.stringify(decycle(res)));
+        // console.log(JSON.stringify(decycle(res)));
         return res.data;
     }
 

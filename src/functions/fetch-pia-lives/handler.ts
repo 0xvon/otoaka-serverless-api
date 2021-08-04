@@ -3,6 +3,7 @@ import 'source-map-support/register';
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
+import { decycle } from 'json-cyclic';
 import {
     APIClient,
     // LiveStyle,
@@ -18,11 +19,14 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
     try {
         const groups = await apiClient.getAllGroup();
         for (const group of groups) {
-            const eventReleases = await apiClient.searchPiaLive({
+            const eventRelease = await apiClient.searchPiaLive({
                 piaApiKey: piaApiKey,
                 keyword: group.name,
             });
-            return formatJSONResponse(eventReleases);
+            if (!eventRelease.eventReleases) { continue; }
+
+            console.log(JSON.stringify(decycle(eventRelease.eventReleases.eventRelease)));
+            return formatJSONResponse(eventRelease.eventReleases);
         }
     } catch(e) {
         console.log(e);
