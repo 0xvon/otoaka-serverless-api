@@ -1,4 +1,6 @@
 const axios = require('axios');
+import { decycle } from 'json-cyclic';
+
 
 interface Props {
     endpoint: string;
@@ -77,6 +79,7 @@ export class APIClient {
         });
         
         const res = await apiAxios.get('/external/groups');
+        console.log(JSON.stringify(decycle(res)));
         return res as Group[];
     }
 
