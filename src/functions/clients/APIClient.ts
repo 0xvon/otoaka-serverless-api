@@ -77,7 +77,8 @@ export class APIClient {
         });
         
         const res = await apiAxios.get('/external/groups');
-        console.log(`response: ${res}`);
+        console.log(`response items: ${JSON.stringify(res)}`);
+        // console.log(`response object ${res.body.items}`);
         return res.items as Group[];
     }
 
