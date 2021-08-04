@@ -67,6 +67,7 @@ export class APIClient {
     }
 
     getAllGroup = async () => {
+        console.log('calling /external/groups ...');
         const apiAxios = axios.create({
             baseURL: this.props.endpoint,
             headers: {
@@ -76,6 +77,7 @@ export class APIClient {
         });
         
         const res = await apiAxios.get('/external/groups');
+        console.log(`response: ${res}`);
         return res.items as Group[];
     }
 
