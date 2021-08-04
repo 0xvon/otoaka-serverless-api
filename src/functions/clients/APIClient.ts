@@ -23,6 +23,13 @@ export interface LiveStyleInput {
     value: string | string[]; // group id
 }
 
+interface searchPiaLiveParams {
+    piaApiKey: string;
+    keyword?: string;
+    sort?: string;
+    get_count?: number;
+}
+
 export enum LiveStyle {
     oneman, battle, festival
 }
@@ -59,7 +66,6 @@ export class APIClient {
             baseURL: this.props.endpoint,
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': `Bearer ${this.props.idToken}`,
             },
             responseType: 'json',
         });
@@ -81,6 +87,22 @@ export class APIClient {
         const res = await apiAxios.get('/external/groups');
         console.log(JSON.stringify(decycle(res)));
         return res.data as Group[];
+    }
+
+    searchPiaLive = async (params: searchPiaLiveParams) => {
+        console.log('calling /external/test_pia_event_release ...');
+
+        const apiAxios = axios.create({
+            baseURL: this.props.endpoint,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            responseType: 'json',
+        });
+        
+        const res = await apiAxios.get('/external/test_pia_event_release', { params: params });
+        console.log(JSON.stringify(decycle(res)));
+        return res.data;
     }
 
     fetchLive = async (request: CreateLiveRequest) => {

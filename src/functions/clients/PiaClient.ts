@@ -24,12 +24,12 @@ export class PiaClient {
 
         const params = {
             keyword: query,
-            sort: 'D',
+            // sort: 'D',
             apikey: this.props.apiKey,
             get_count: 100,
         };
 
-        const response = await apiAxios.get(this.props.uri + '/1.1/event_releases', { params: params });
+        const response = await apiAxios.get('/1.1/event_releases', { params: params });
         return response.data;
     }
 }
