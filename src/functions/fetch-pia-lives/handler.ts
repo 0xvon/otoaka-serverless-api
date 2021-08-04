@@ -19,6 +19,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
     try {
         const groups = await apiClient.getAllGroup();
         for (const group of groups) {
+            _sleep(5000);
             const eventRelease = await apiClient.searchPiaLive({
                 piaApiKey: piaApiKey,
                 keyword: group.name,
@@ -33,5 +34,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
         return formatJSONResponse(e, 500);
     }
 }
+
+const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const main = middyfy(handler);

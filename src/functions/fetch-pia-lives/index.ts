@@ -13,6 +13,7 @@ export default {
         //     schedule: 'cron(0 9 * * ? *)',
         // },
     ],
+    timeout: 300,
     environment: {
         ENDPOINT_URL: process.env.ENDPOINT_URL,
         PIA_API_KEY: process.env.PIA_API_KEY,
