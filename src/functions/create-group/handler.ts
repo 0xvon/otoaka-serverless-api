@@ -3,9 +3,12 @@ import 'source-map-support/register';
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
-import { YouTubeClient } from './Clients/YoutubeClient';
-import { APIClient, CreateGroupRequest } from './Clients/APIClient';
-import { S3Client } from './Clients/S3Client';
+import {
+    S3Client,
+    YouTubeClient,
+    APIClient,
+    CreateGroupRequest
+} from '../clients';
 import schema from './schema';
 
 const apiKey = process.env.YOUTUBE_API_KEY ?? '';
