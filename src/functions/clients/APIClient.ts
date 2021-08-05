@@ -106,6 +106,7 @@ export class APIClient {
     }
 
     fetchLive = async (request: CreateLiveRequest) => {
+        console.log(`calling /external/fetch_live (title: ${request.title}) ...`);
         const apiAxios = axios.create({
             baseURL: this.props.endpoint,
             headers: {
@@ -115,6 +116,6 @@ export class APIClient {
         });
         
         const res = await apiAxios.post('/external/fetch_live', request);
-        return res;
+        return res.data;
     }
 }
