@@ -90,7 +90,7 @@ export class APIClient {
     }
 
     searchPiaLive = async (params: searchPiaLiveParams) => {
-        console.log('calling /external/test_pia_event_release ...');
+        console.log(`calling /external/test_pia_event_release (query: ${params.keyword}) ...`);
 
         const apiAxios = axios.create({
             baseURL: this.props.endpoint,
@@ -101,7 +101,7 @@ export class APIClient {
         });
         
         const res = await apiAxios.get('/external/test_pia_event_release', { params: params });
-        // console.log(JSON.stringify(decycle(res)));
+        console.log(JSON.stringify(decycle(res)));
         return res.data;
     }
 
