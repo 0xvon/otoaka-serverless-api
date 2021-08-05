@@ -25,7 +25,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 piaApiKey: piaApiKey,
                 keyword: group.name,
             });
-            
+
             if (piaEventResponse.searchHeader.resultCount === 0) {
                 console.log('no event release');
                 continue;
@@ -38,13 +38,17 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 for (const perform of eventRelease.performs.perform) {
                     if (perform.appearArtists) {
                         for (const appearArtist of perform.appearArtists.appearArtist) {
+                            console.log(`appearArtist name is ${appearArtist.artistName}`);
                             const g = groups.filter((val) => val.name === appearArtist.artistName)[0];
+                            console.log(`id is ${g?.id}`);
                             if (g) { groupIds.push(g.id); }
                         }
                     }
                     if (perform.appearMainArtists) {
                         for (const appearMainArtist of perform.appearMainArtists.appearMainArtist) {
+                            console.log(`appearMainArtist name is ${appearMainArtist.artistName}`);
                             const g = groups.filter((val) => val.name === appearMainArtist.artistName)[0];
+                            console.log(`id is ${g?.id}`);
                             if (g) { groupIds.push(g.id); }
                         }
                     }
