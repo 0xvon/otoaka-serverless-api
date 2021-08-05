@@ -47,7 +47,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     if (perform.appearMainArtists) {
                         for (const appearMainArtist of perform.appearMainArtists.appearMainArtist) {
                             console.log(`appearMainArtist name is ${appearMainArtist.artistName}`);
-                            const g = groups.filter((val) => val.name === appearMainArtist.artistName)[0];
+                            const g = groups.filter((val) => val.name === hankaku2Zenkaku(appearMainArtist.artistName))[0];
                             console.log(`id is ${g?.id}`);
                             if (g) { groupIds.push(g.id); }
                         }
@@ -109,5 +109,11 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
 }
 
 const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const hankaku2Zenkaku =(str: string) => {
+    return str.replace(/[！-～]/g, function(s) {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+    });
+}
 
 export const main = middyfy(handler);
