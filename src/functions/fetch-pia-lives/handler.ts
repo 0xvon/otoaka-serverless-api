@@ -7,7 +7,6 @@ import { middyfy } from '@libs/lambda';
 import {
     APIClient,
     LiveStyleInput,
-    LiveStyle,
 } from '../clients';
 
 const endpointUrl = process.env.ENDPOINT_URL ?? '';
@@ -63,18 +62,18 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 if (eventRelease.performs?.perform.length === 1) {
                     if (groupIds.length === 1) {
                         style = {
-                            kind: LiveStyle.oneman,
+                            kind: 'oneman',
                             value: groupIds[0],
                         };
                     } else {
                         style = {
-                            kind: LiveStyle.battle,
+                            kind: 'battle',
                             value: groupIds,
                         };
                     }
                 } else {
                     style = {
-                        kind: LiveStyle.festival,
+                        kind: 'festival',
                         value: groupIds,
                     };
                 }

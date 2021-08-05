@@ -30,9 +30,7 @@ interface searchPiaLiveParams {
     get_count?: number;
 }
 
-export enum LiveStyle {
-    oneman, battle, festival
-}
+export type LiveStyle = 'oneman' | 'battle' | 'festival';
 
 export interface CreateLiveRequest {
         title: string;
