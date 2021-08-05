@@ -57,6 +57,9 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                         kind: LiveStyle.oneman,
                         value: groupIds[0],
                     };
+                } else {
+                    console.log('appearMainArtists and appearArtists are null');
+                    continue;
                 }
 
                 const live = await apiClient.fetchLive({
