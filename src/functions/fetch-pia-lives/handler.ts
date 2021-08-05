@@ -25,40 +25,58 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 piaApiKey: piaApiKey,
                 keyword: group.name,
             });
-            if (!piaEventResponse.eventReleases) { continue; }
+            
+            if (piaEventResponse.searchHeader.resultCount === 0) {
+                console.log('no event release');
+                continue;
+            }
+
+            // add groups
             for (const eventRelease of piaEventResponse.eventReleases.eventRelease) {
                 let style: LiveStyleInput;
-                if (eventRelease.performs.perform[0].appearArtists && eventRelease.performs.perform[0].appearMainArtists) { // appearArtistsがいればfestival
-                    let groupIds: string[] = [];
-                    for (const appearMainArtist of eventRelease.performs.perform[0].appearMainArtists.appearMainArtist) {
-                        const g = groups.filter((val) => val.name === appearMainArtist.artistName)[0];
-                        if (g) { groupIds.push(g.id); }
+                let groupIds = [];
+                for (const perform of eventRelease.performs.perform) {
+                    if (perform.appearArtists) {
+                        for (const appearArtist of perform.appearArtists.appearArtist) {
+                            const g = groups.filter((val) => val.name === appearArtist.artistName)[0];
+                            if (g) { groupIds.push(g.id); }
+                        }
                     }
-
-                    for (const appearArtist of eventRelease.performs.perform[0].appearArtists.appearArtist) {
-                        const g = groups.filter((val) => val.name === appearArtist.artistName)[0];
-                        if (g) { groupIds.push(g.id); }
+                    if (perform.appearMainArtists) {
+                        for (const appearMainArtist of perform.appearMainArtists.appearMainArtist) {
+                            const g = groups.filter((val) => val.name === appearMainArtist.artistName)[0];
+                            if (g) { groupIds.push(g.id); }
+                        }
                     }
-                    if (!groupIds[0]) { continue; }
+                }
 
+                if (groupIds.length === 0 || eventRelease.performs.perform.length === 0) {
+                    console.log('no groups or performs');
+                    continue;
+                }
+
+                // style
+                if (eventRelease.performs?.perform.length === 1) {
+                    if (groupIds.length === 1) {
+                        style = {
+                            kind: LiveStyle.oneman,
+                            value: groupIds[0],
+                        };
+                    } else {
+                        style = {
+                            kind: LiveStyle.battle,
+                            value: groupIds,
+                        };
+                    }
+                } else {
                     style = {
                         kind: LiveStyle.festival,
                         value: groupIds,
                     };
-                } else if (eventRelease.performs.perform[0].appearMainArtists) { // appearMainArtistsのみならoneman
-                    let groupIds: string[] = [];
-                    for (const appearMainArtist of eventRelease.performs.perform[0].appearMainArtists.appearMainArtist) {
-                        const g = groups.filter((val) => val.name === appearMainArtist.artistName)[0];
-                        if (g) { groupIds.push(g.id); }
-                    }
-                    if (!groupIds[0]) { continue; }
+                }
 
-                    style = {
-                        kind: LiveStyle.oneman,
-                        value: groupIds[0],
-                    };
-                } else {
-                    console.log('appearMainArtists and appearArtists are null');
+                if (!style){
+                    console.log('style not determined');
                     continue;
                 }
 
