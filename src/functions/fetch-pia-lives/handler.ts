@@ -11,15 +11,13 @@ import {
 
 const endpointUrl = process.env.ENDPOINT_URL ?? '';
 const piaApiKey = process.env.PIA_API_KEY ?? '';
-// const piaEndpointUrl = process.env.PIA_ENDPOINT_URL
-// const bucketName = process.env.S3_BUCKET ?? '';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
     const apiClient = new APIClient({ endpoint: endpointUrl });
     try {
         const groups = await apiClient.getAllGroup();
         for (const group of groups) {
-            _sleep(5000);
+            _sleep(1000);
             const piaEventResponse = await apiClient.searchPiaLive({
                 piaApiKey: piaApiKey,
                 keyword: group.name,
@@ -37,17 +35,17 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 for (const perform of eventRelease.performs.perform) {
                     if (perform.appearArtists) {
                         for (const appearArtist of perform.appearArtists.appearArtist) {
-                            console.log(`appearArtist name is ${appearArtist.artistName}`);
-                            const g = groups.filter((val) => val.name === appearArtist.artistName)[0];
-                            console.log(`id is ${g?.id}`);
+                            // console.log(`appearArtist name is ${appearArtist.artistName}`);
+                            const g = groups.filter((val) => val.name === hankaku2Zenkaku(appearArtist.artistName))[0];
+                            // console.log(`id is ${g?.id}`);
                             if (g) { groupIds.push(g.id); }
                         }
                     }
                     if (perform.appearMainArtists) {
                         for (const appearMainArtist of perform.appearMainArtists.appearMainArtist) {
-                            console.log(`appearMainArtist name is ${appearMainArtist.artistName}`);
+                            // console.log(`appearMainArtist name is ${appearMainArtist.artistName}`);
                             const g = groups.filter((val) => val.name === hankaku2Zenkaku(appearMainArtist.artistName))[0];
-                            console.log(`id is ${g?.id}`);
+                            // console.log(`id is ${g?.id}`);
                             if (g) { groupIds.push(g.id); }
                         }
                     }
@@ -84,12 +82,12 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 }
 
                 const live = await apiClient.fetchLive({
-                    title: eventRelease.event.mainTitle,
+                    title: hankaku2Zenkaku(eventRelease.event.mainTitle),
                     style: style,
                     price: 5000, // don't use this paramater
                     artworkURL: eventRelease.event.imageUrlXls?.imageUrlXl[0]?.imageUrl,
                     hostGroupId: group.id,
-                    liveHouse: eventRelease.performs.perform[0].venue.venueName,
+                    liveHouse: hankaku2Zenkaku(eventRelease.performs.perform[0].venue.venueName),
                     date: eventRelease.performs.perform[0].performDate,
                     openAt: eventRelease.performs.perform[0].openTime,
                     startAt: eventRelease.performs.perform[0].performStartTime,
@@ -98,8 +96,9 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     piaEventUrl: eventRelease.event.eventUrlMobile,
                 });
                 
-                return formatJSONResponse(live); 
+                console.log(`live is ${live}`);
             }
+            return formatJSONResponse({ result: 'ok' });
         }
     } catch(e) {
         console.log(e);
