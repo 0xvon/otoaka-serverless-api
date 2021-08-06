@@ -98,8 +98,8 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 
                 console.log(`live is ${live}`);
             }
-            return formatJSONResponse({ result: 'ok' });
         }
+        return formatJSONResponse({ result: 'ok' });
     } catch(e) {
         console.log(e);
         return formatJSONResponse(e, 500);
