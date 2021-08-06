@@ -3,7 +3,7 @@ import 'source-map-support/register';
 import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
-// import { decycle } from 'json-cyclic';
+import { decycle } from 'json-cyclic';
 import {
     APIClient,
     LiveStyleInput,
@@ -28,24 +28,20 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 continue;
             }
 
-            // add groups
+            // add each event release to DB
             for (const eventRelease of piaEventResponse.eventReleases.eventRelease) {
                 let style: LiveStyleInput;
                 let groupIds = [];
                 for (const perform of eventRelease.performs.perform) {
                     if (perform.appearArtists) {
                         for (const appearArtist of perform.appearArtists.appearArtist) {
-                            // console.log(`appearArtist name is ${appearArtist.artistName}`);
-                            const g = groups.filter((val) => val.name === hankaku2Zenkaku(appearArtist.artistName))[0];
-                            // console.log(`id is ${g?.id}`);
+                            const g = groups.filter((val) => val.name === zen2han(appearArtist.artistName))[0];
                             if (g) { groupIds.push(g.id); }
                         }
                     }
                     if (perform.appearMainArtists) {
                         for (const appearMainArtist of perform.appearMainArtists.appearMainArtist) {
-                            // console.log(`appearMainArtist name is ${appearMainArtist.artistName}`);
-                            const g = groups.filter((val) => val.name === hankaku2Zenkaku(appearMainArtist.artistName))[0];
-                            // console.log(`id is ${g?.id}`);
+                            const g = groups.filter((val) => val.name === zen2han(appearMainArtist.artistName))[0];
                             if (g) { groupIds.push(g.id); }
                         }
                     }
@@ -56,7 +52,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     continue;
                 }
 
-                // style
+                // determine style
                 if (eventRelease.performs?.perform.length === 1) {
                     if (groupIds.length === 1) {
                         style = {
@@ -82,12 +78,12 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 }
 
                 const live = await apiClient.fetchLive({
-                    title: hankaku2Zenkaku(eventRelease.event.mainTitle),
+                    title: zen2han(eventRelease.event.mainTitle),
                     style: style,
                     price: 5000, // don't use this paramater
                     artworkURL: eventRelease.event.imageUrlXls?.imageUrlXl[0]?.imageUrl,
                     hostGroupId: group.id,
-                    liveHouse: hankaku2Zenkaku(eventRelease.performs.perform[0].venue.venueName),
+                    liveHouse: zen2han(eventRelease.performs.perform[0].venue.venueName),
                     date: eventRelease.performs.perform[0].performDate,
                     openAt: eventRelease.performs.perform[0].openTime,
                     startAt: eventRelease.performs.perform[0].performStartTime,
@@ -96,7 +92,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     piaEventUrl: eventRelease.event.eventUrlMobile,
                 });
                 
-                console.log(`live is ${live}`);
+                console.log(`live is ${JSON.stringify(decycle(live))}`);
             }
         }
         return formatJSONResponse({ result: 'ok' });
@@ -106,9 +102,9 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
     }
 }
 
-const _sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const _sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const hankaku2Zenkaku =(str: string) => {
+const zen2han =(str: string) => {
     return str.replace(/[！-～]/g, function(s) {
         return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
