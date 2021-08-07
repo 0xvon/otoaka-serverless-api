@@ -56,11 +56,18 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 }
 
                 // determine style
-                if (eventRelease.performs?.perform[0].appearMainArtists || groupIds.length == 1) {
-                    style = {
-                        kind: 'oneman',
-                        value: groupIds[0],
-                    };
+                if (eventRelease.performs?.perform[0].appearMainArtists) {
+                    if (eventRelease.performs?.perform[0].appearArtists) {
+                        style = {
+                            kind: 'battle',
+                            value : groupIds,
+                        }
+                    } else {
+                        style = {
+                            kind: 'oneman',
+                            value: groupIds[0],
+                        };
+                    }
                 } else {
                     style = {
                         kind: 'festival',
