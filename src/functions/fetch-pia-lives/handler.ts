@@ -47,24 +47,20 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     }
                 }
 
+                // make unique
+                groupIds = [...new Set(groupIds)];
+
                 if (groupIds.length === 0 || eventRelease.performs.perform.length === 0) {
                     console.log('no groups or performs');
                     continue;
                 }
 
                 // determine style
-                if (eventRelease.performs?.perform.length === 1) {
-                    if (groupIds.length === 1) {
-                        style = {
-                            kind: 'oneman',
-                            value: groupIds[0],
-                        };
-                    } else {
-                        style = {
-                            kind: 'battle',
-                            value: groupIds,
-                        };
-                    }
+                if (eventRelease.performs?.perform[0].appearMainArtists || groupIds.length == 1) {
+                    style = {
+                        kind: 'oneman',
+                        value: groupIds[0],
+                    };
                 } else {
                     style = {
                         kind: 'festival',
