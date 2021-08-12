@@ -14,6 +14,7 @@
     "@middy/http-json-body-parser": "^1.5.2",
     "aws-sdk": "^2.853.0",
     "axios": "^0.21.1",
+    "json-cyclic": "^1.0.2",
     "request-promise": "^4.2.6",
     "source-map-support": "^0.5.19"
   },
