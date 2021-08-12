@@ -9,9 +9,9 @@ export default {
                 path: 'fetch_pia_lives',
             }
         },
-        // {
-        //     schedule: 'cron(0 9 * * ? *)',
-        // },
+        {
+            schedule: 'cron(0 9 * * ? *)',
+        },
     ],
     timeout: 300,
     environment: {
