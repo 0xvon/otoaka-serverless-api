@@ -91,8 +91,8 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     openAt: eventRelease.performs.perform[0].openTime,
                     startAt: eventRelease.performs.perform[0].performStartTime,
                     piaEventCode: eventRelease.event.eventCode,
-                    piaReleaseUrl: eventRelease.release.releaseUrlMobile,
-                    piaEventUrl: eventRelease.event.eventUrlMobile,
+                    piaReleaseUrl: eventRelease.release.releaseUrlPc,
+                    piaEventUrl: eventRelease.event.eventUrlPc,
                 });
                 
                 console.log(`live is ${JSON.stringify(decycle(live))}`);
