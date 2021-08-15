@@ -3,6 +3,7 @@ import {
     createGroup,
     customOgpHtml,
     fetchPiaLives,
+    createLive,
 } from './src/functions';
 
 const serverlessConfiguration: AWS = {
@@ -68,7 +69,7 @@ const serverlessConfiguration: AWS = {
             }
         },
     },
-    functions: { createGroup, customOgpHtml, fetchPiaLives },
+    functions: { createGroup, customOgpHtml, fetchPiaLives, createLive },
 };
 
 module.exports = serverlessConfiguration;

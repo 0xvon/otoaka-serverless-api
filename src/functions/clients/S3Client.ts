@@ -1,5 +1,7 @@
 import * as AWS from 'aws-sdk';
 const axios = require('axios');
+const sharp = require('sharp');
+
 
 export class S3Client {
     s3: AWS.S3;
@@ -11,12 +13,15 @@ export class S3Client {
     }
 
     upload = async (imageUrl: string, key: string) => {
-        const imageRes = await axios.get(imageUrl, {responseType: 'arraybuffer'});
+        console.log(`uploading ${imageUrl} ...`);
 
-        console.log(imageUrl);
-
+        const image = await axios.get(imageUrl, {responseType: 'arraybuffer'}).data as Buffer;
+        const resized = sharp(image)
+            .resize(400)
+            .jpeg({ quality: 10 })
+            .toBuffer();
         const res = await this.s3.putObject({
-            Body: Buffer.from(imageRes.data),
+            Body: resized,
             Bucket: this.bucketName,
             ContentType: 'image/jpeg',
             Key: `assets/imported/${key}.jpeg`,

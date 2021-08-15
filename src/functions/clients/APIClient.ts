@@ -116,4 +116,18 @@ export class APIClient {
         const res = await apiAxios.post('/external/fetch_live', request);
         return res.data;
     }
+
+    createLive = async (request: CreateLiveRequest) => {
+        console.log(`calling /external/create_live (title: ${request.title}) ...`);
+        const apiAxios = axios.create({
+            baseURL: this.props.endpoint,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            responseType: 'json',
+        });
+        
+        const res = await apiAxios.post('/external/create_live', request);
+        return res.data;
+    }
 }
