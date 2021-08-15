@@ -19,8 +19,6 @@ jobs:
 
             - run: |
                 npm i
-                rm -rf node_modules/sharp
-                npm install --arch=x64 --platform=linux sharp
 
             - name: configure aws
               uses: aws-actions/configure-aws-credentials@v1
