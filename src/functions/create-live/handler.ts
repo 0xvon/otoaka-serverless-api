@@ -16,6 +16,7 @@ const bucketName = process.env.S3_BUCKET ?? '';
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     const s3Client = new S3Client(bucketName);
     const apiClient = new APIClient({ endpoint: endpointUrl});
+    console.log(`event: ${event}`);
     try {
         const groups = await apiClient.getAllGroup();
         const performerIds = [];

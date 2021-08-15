@@ -16,8 +16,8 @@ export class S3Client {
         console.log(`uploading ${imageUrl} ...`);
 
         const image = await axios.get(imageUrl, {responseType: 'arraybuffer'}).data as Buffer;
-        const resized = gm(image, `${key}.jpg`)
-            .resize(400, 400)
+        const resized = await gm(image, `${key}.jpg`)
+            .resize(400)
             .toBuffer('jpg');
         const res = await this.s3.putObject({
             Body: resized,
