@@ -7,7 +7,7 @@ on:
 jobs:
     deploy:
         name: deploy
-        runs-on: [self-hosted, linux, x64]
+        runs-on: ubuntu-latest
         steps:
             - name: checkout
               uses: actions/checkout@v1
@@ -17,7 +17,10 @@ jobs:
               with:
                   node-version: "14.x"
 
-            - run: npm i --arch=x64 --platform=linux --target=14.0.0
+            - run: |
+                npm i
+                rm -rf node_modules/sharp
+                npm install --arch=x64 --platform=linux sharp
 
             - name: configure aws
               uses: aws-actions/configure-aws-credentials@v1
