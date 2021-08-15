@@ -1,7 +1,8 @@
 import * as AWS from 'aws-sdk';
 const axios = require('axios');
-const gm = require('gm');
-
+// const gm = require('gm');
+import * as gm from 'gm';
+const im = gm.subClass({ imageMagick: true });
 
 export class S3Client {
     s3: AWS.S3;
@@ -15,10 +16,10 @@ export class S3Client {
     upload = async (imageUrl: string, key: string) => {
         console.log(`uploading ${imageUrl} ...`);
 
-        const image = await axios.get(imageUrl, {responseType: 'arraybuffer'}).data as Buffer;
-        const resized = await gm(image, `${key}.jpg`)
-            .resize(400)
-            .toBuffer('jpg');
+        const imageData = await axios.get(imageUrl, {responseType: 'arraybuffer'}).data;
+        const image = im(Buffer.from(imageData));
+        const resized = await this.resize(image);
+        
         const res = await this.s3.putObject({
             Body: resized,
             Bucket: this.bucketName,
@@ -27,5 +28,17 @@ export class S3Client {
         }).promise()
 
         return res
+    }
+
+    resize = async (image: gm.State): Promise<Buffer> => {
+        return new Promise((resolve, reject) => {
+            image.resize(400).toBuffer('JPG', (err, buffer) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(buffer);
+                }
+            })
+        });
     }
 }
