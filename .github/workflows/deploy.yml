@@ -17,7 +17,7 @@ jobs:
               with:
                   node-version: "14.x"
 
-            - run: npm i
+            - run: npm i --arch=x64 --platform=linux --target=14.0.0
 
             - name: configure aws
               uses: aws-actions/configure-aws-credentials@v1
