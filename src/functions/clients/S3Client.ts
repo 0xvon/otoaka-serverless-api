@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-var Jimp = require("jimp");
+const Jimp = require("jimp");
 
 export class S3Client {
     s3: AWS.S3;
@@ -39,13 +39,15 @@ export class S3Client {
 
     resize = async (url: string) => {
         return new Promise((resolve, reject) => {
-            Jimp.read(url, (err, data) => {
+            Jimp.read(url, (err, image) => {
                 if (err) { reject(err) }
                 else {
-                    data.scaleToFit(400, Jimp.AUTO, Jimp.RESIZE_BEZIER).getBuffer(Jimp.MIME_JPEG, (err, data) => {
-                        if (err) { reject(err) }
-                        else { resolve(data) }
-                    })
+                    image
+                        .scaleToFit(400, Jimp.AUTO, Jimp.RESIZE_BEZIER)
+                        .getBuffer(Jimp.MIME_JPEG, (err, data) => {
+                            if (err) { reject(err) }
+                            else { resolve(data) }
+                        })
                 }
             });
         })
