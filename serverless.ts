@@ -14,7 +14,7 @@ const serverlessConfiguration: AWS = {
         webpack: {
             webpackConfig: './webpack.config.js',
             includeModules: true,
-            packagerOptions:{
+            packagerOptions:{ // see here: https://github.com/serverless-heaven/serverless-webpack/issues/396
                 scripts: [
                     'npm rebuild sharp --target_arch=x64 --target_platform=linux',
                 ],
