@@ -10,13 +10,14 @@ import {
 } from '../clients';
 import schema from './schema';
 
-const endpointUrl = process.env.ENDPOINT_URL ?? '';
-const bucketName = process.env.S3_BUCKET ?? '';
+const endpointUrl = process.env.ENDPOINT_URL ?? 'http://api-dev.rocketfor.band';
+const bucketName = process.env.S3_BUCKET ?? 'rocket-auth-dev-storage';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     const s3Client = new S3Client(bucketName);
     const apiClient = new APIClient({ endpoint: endpointUrl});
-    console.log(`event: ${event}`);
+    // console.log(`event: ${JSON.stringify(event)}`);
+    console.log(`event body title: ${event.body.title}`);
     try {
         const groups = await apiClient.getAllGroup();
         const performerIds = [];
@@ -35,9 +36,9 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         var imageUrl = null;
         if (event.body.artworkURL) {
             const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
-            const s3ObjRes = await s3Client.upload(event.body.artworkURL, key);
-            console.log(s3ObjRes);
-            imageUrl = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${key}.png`;
+            await s3Client.upload(event.body.artworkURL, key);
+            // console.log(s3ObjRes);
+            imageUrl = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${key}.jpeg`;
         }
 
         // determine live style

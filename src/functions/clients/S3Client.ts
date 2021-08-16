@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
 const axios = require('axios');
-import * as gm from 'gm';
-// const im = gm.subClass({ imageMagick: true });
+const sharp = require('sharp');
 
 export class S3Client {
     s3: AWS.S3;
@@ -30,48 +29,20 @@ export class S3Client {
         const imageData: ArrayBuffer = imageRes.data;
         const imageBuffer = Buffer.from(imageData);
         console.log(`imageBuffer is undefined?: ${imageBuffer === undefined}`);
-        const image = gm(imageBuffer);
-        const resized = await this.resize(image);
-        console.log('resizing complete!', resized.toString());
+        const resized = await this.resize(imageBuffer);
+        console.log('resizing complete!');
 
         const res = await this.s3.putObject({
             Body: resized,
             Bucket: this.bucketName,
-            ContentType: 'image/png',
-            Key: `assets/imported/${key}.png`,
+            ContentType: 'image/jpeg',
+            Key: `assets/imported/${key}.jpeg`,
         }).promise()
 
         return res
     }
 
-    resize = async (image: gm.State): Promise<Buffer> => {
-        return new Promise((resolve, reject) => {
-            image
-                .resize(400, 400)
-                .setFormat('png')
-                .stream((err, stdout, stderr) => {
-                if (err) {
-                    console.log('stream process error');
-                    console.log(err, stdout, stderr);
-                    reject(err);
-                }
-
-                var chunks = [];
-                stdout.on('data', function(chunk) {
-                    console.log('pushed');
-                    chunks.push(chunk);
-                });
-
-                stdout.once('end', function() {
-                    console.log('end');
-                    var buffer = Buffer.concat(chunks);
-                    resolve(buffer);
-                });
-
-                stderr.once('data',function(data) {
-                    console.log(`stderr data:`, data);
-                })
-            })
-        });
+    resize = async (buffer: Buffer) => {
+        return await sharp(buffer).resize(400, 400).toBuffer();
     }
 }

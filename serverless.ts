@@ -39,6 +39,7 @@ const serverlessConfiguration: AWS = {
         'serverless-layers',
         'serverless-add-api-key',
         'serverless-domain-manager',
+        'serverless-offline',
     ],
     provider: {
         name: 'aws',
