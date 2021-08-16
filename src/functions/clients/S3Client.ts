@@ -1,6 +1,5 @@
 import * as AWS from 'aws-sdk';
 const axios = require('axios');
-// const gm = require('gm');
 import * as gm from 'gm';
 const im = gm.subClass({ imageMagick: true });
 
@@ -19,7 +18,8 @@ export class S3Client {
         const imageData = await axios.get(imageUrl, {responseType: 'arraybuffer'}).data;
         const image = im(Buffer.from(imageData));
         const resized = await this.resize(image);
-        
+        console.log('resizing complete!')
+
         const res = await this.s3.putObject({
             Body: resized,
             Bucket: this.bucketName,
