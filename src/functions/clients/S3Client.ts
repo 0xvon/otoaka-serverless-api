@@ -38,8 +38,8 @@ export class S3Client {
         const res = await this.s3.putObject({
             Body: resized,
             Bucket: this.bucketName,
-            ContentType: 'image/jpeg',
-            Key: `assets/imported/${key}.jpeg`,
+            ContentType: 'image/png',
+            Key: `assets/imported/${key}.png`,
         }).promise()
 
         return res
@@ -84,8 +84,8 @@ export class S3Client {
         return new Promise((resolve, reject) => {
             im.resize({
                 srcData: data,
-                format: "jpeg",
-                width: 400
+                format: "png",
+                width: '400'
             }, (err, stdout, stderr) => {
                 if (err) { reject(err) }
                 else { resolve(Buffer.from(stdout, 'binary'))}

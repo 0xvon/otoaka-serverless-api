@@ -37,7 +37,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
             const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
             const s3ObjRes = await s3Client.upload(event.body.artworkURL, key);
             console.log(s3ObjRes);
-            imageUrl = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${key}.jpeg`;
+            imageUrl = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${key}.png`;
         }
 
         // determine live style
