@@ -16,6 +16,7 @@ export default {
             }
         }
     ],
+    timeout: 300,
     environment: {
         ENDPOINT_URL: process.env.ENDPOINT_URL,
         YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,

@@ -46,7 +46,11 @@ export class S3Client {
 
     resize = async (image: gm.State): Promise<Buffer> => {
         return new Promise((resolve, reject) => {
-            image.resize(400).stream((err, stdout, stderr) => {
+            image
+                .limit('memory', '1024MB')
+                .resize(400)
+                .setFormat('jpeg')
+                .stream(function(err, stdout, stderr) {
                 if (err) {
                     console.log('stream process error');
                     console.log(err, stdout, stderr);
@@ -63,6 +67,10 @@ export class S3Client {
                     var buffer = Buffer.concat(chunks);
                     resolve(buffer);
                 });
+
+                stderr.on('data',function(data) {
+                    console.log(`stderr data:`, data);
+                })
             })
         });
     }
