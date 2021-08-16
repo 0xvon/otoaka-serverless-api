@@ -35,7 +35,7 @@ export class S3Client {
 
     resize = async (image: gm.State): Promise<Buffer> => {
         return new Promise((resolve, reject) => {
-            image.resize(400).toBuffer('JPG', (err, buffer) => {
+            image.resize(400).toBuffer('jpeg', (err, buffer) => {
                 if (err) {
                     reject(err);
                 } else {
