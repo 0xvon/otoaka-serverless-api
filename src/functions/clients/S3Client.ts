@@ -47,10 +47,9 @@ export class S3Client {
     resize = async (image: gm.State): Promise<Buffer> => {
         return new Promise((resolve, reject) => {
             image
-                .limit('memory', '1024MB')
-                .resize(400)
+                .resize(400, 400)
                 .setFormat('jpeg')
-                .stream(function(err, stdout, stderr) {
+                .stream((err, stdout, stderr) => {
                 if (err) {
                     console.log('stream process error');
                     console.log(err, stdout, stderr);
