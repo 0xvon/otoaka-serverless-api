@@ -14,6 +14,11 @@ const serverlessConfiguration: AWS = {
         webpack: {
             webpackConfig: './webpack.config.js',
             includeModules: true,
+            packagerOptions:{
+                scripts: [
+                    'npm rebuild sharp --target_arch=x64 --target_platform=linux',
+                ],
+            },
         },
         apiKeys: [
             {
