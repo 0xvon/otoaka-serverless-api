@@ -15,8 +15,11 @@ export class S3Client {
     upload = async (imageUrl: string, key: string) => {
         console.log(`uploading ${imageUrl} ...`);
 
-        const imageData = await axios.get(imageUrl, {responseType: 'arraybuffer'}).data;
-        const image = im(Buffer.from(imageData));
+        const imageRes = await axios.get(imageUrl, {responseType: 'arraybuffer'});
+        const imageData: ArrayBuffer = imageRes.data;
+        const imageBuffer = Buffer.from(imageData);
+        console.log(`imageBuffer is ${imageBuffer.toString()}`);
+        const image = im(imageBuffer);
         const resized = await this.resize(image);
         console.log('resizing complete!')
 
