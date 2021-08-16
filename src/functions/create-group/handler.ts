@@ -18,7 +18,7 @@ const bucketName = process.env.S3_BUCKET ?? '';
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     const youtubeClient = new YouTubeClient({ apiKey: apiKey });
     const s3Client = new S3Client(bucketName);
-    const apiClient = new APIClient({ endpoint: endpointUrl, idToken: event.body.id_token });
+    const apiClient = new APIClient({ endpoint: endpointUrl });
 
     const listChannelResponse = await youtubeClient.listChannel(event.body.youtube_channel_id);
     console.log(listChannelResponse);

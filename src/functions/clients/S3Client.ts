@@ -1,5 +1,5 @@
 import * as AWS from 'aws-sdk';
-const axios = require('axios');
+const Jimp = require("jimp");
 
 export class S3Client {
     s3: AWS.S3;
@@ -11,17 +11,45 @@ export class S3Client {
     }
 
     upload = async (imageUrl: string, key: string) => {
-        const imageRes = await axios.get(imageUrl, {responseType: 'arraybuffer'});
+        var typeMatch = imageUrl.match(/\.([^.]*)$/);
+        if (!typeMatch) {
+            console.log("Could not determine the image type.");
+            return;
+        }
+        var imageType = typeMatch[1];
+        if (imageType != "jpg" && imageType != "jpeg" && imageType != "png") {
+            console.log(`Unsupported image type: ${imageType}`);
+            return;
+        }
 
-        console.log(imageUrl);
+        console.log(`uploading ${imageUrl} ...`);
+
+        const resized = await this.resize(imageUrl);
+        console.log('resizing complete!');
 
         const res = await this.s3.putObject({
-            Body: Buffer.from(imageRes.data),
+            Body: resized,
             Bucket: this.bucketName,
             ContentType: 'image/jpeg',
             Key: `assets/imported/${key}.jpeg`,
         }).promise()
 
         return res
+    }
+
+    resize = async (url: string) => {
+        return new Promise((resolve, reject) => {
+            Jimp.read(url, (err, image) => {
+                if (err) { reject(err) }
+                else {
+                    image
+                        .scaleToFit(400, Jimp.AUTO, Jimp.RESIZE_BEZIER)
+                        .getBuffer(Jimp.MIME_JPEG, (err, data) => {
+                            if (err) { reject(err) }
+                            else { resolve(data) }
+                        })
+                }
+            });
+        })
     }
 }
