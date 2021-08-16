@@ -1,6 +1,5 @@
 import * as AWS from 'aws-sdk';
-const axios = require('axios');
-const sharp = require('sharp');
+var Jimp = require("jimp");
 
 export class S3Client {
     s3: AWS.S3;
@@ -25,11 +24,7 @@ export class S3Client {
 
         console.log(`uploading ${imageUrl} ...`);
 
-        const imageRes = await axios.get(imageUrl, {responseType: 'arraybuffer'});
-        const imageData: ArrayBuffer = imageRes.data;
-        const imageBuffer = Buffer.from(imageData);
-        console.log(`imageBuffer is undefined?: ${imageBuffer === undefined}`);
-        const resized = await this.resize(imageBuffer);
+        const resized = await this.resize(imageUrl);
         console.log('resizing complete!');
 
         const res = await this.s3.putObject({
@@ -42,7 +37,17 @@ export class S3Client {
         return res
     }
 
-    resize = async (buffer: Buffer) => {
-        return await sharp(buffer).resize(400, 400).toBuffer();
+    resize = async (url: string) => {
+        return new Promise((resolve, reject) => {
+            Jimp.read(url, (err, data) => {
+                if (err) { reject(err) }
+                else {
+                    data.scaleToFit(400, Jimp.AUTO, Jimp.RESIZE_BEZIER).getBuffer(Jimp.MIME_JPEG, (err, data) => {
+                        if (err) { reject(err) }
+                        else { resolve(data) }
+                    })
+                }
+            });
+        })
     }
 }

@@ -33,16 +33,15 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         }
 
         // upload artwork url
-        var imageUrl = null;
+        let imageUrl = null;
         if (event.body.artworkURL) {
             const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
             await s3Client.upload(event.body.artworkURL, key);
-            // console.log(s3ObjRes);
             imageUrl = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${key}.jpeg`;
         }
 
         // determine live style
-        var style: LiveStyleInput;
+        let style: LiveStyleInput;
         if (performerIds.length === 1) {
             style = {
                 kind: 'oneman',
