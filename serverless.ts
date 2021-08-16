@@ -11,12 +11,20 @@ const serverlessConfiguration: AWS = {
     frameworkVersion: '2',
     custom: {
         stage: '${opt:stage, self:provider.stage}',
-        webpack: {
-            webpackConfig: './webpack.config.js',
-            includeModules: true,
-            packagerOptions:{ // see here: https://github.com/serverless-heaven/serverless-webpack/issues/396
+        // webpack: {
+        //     webpackConfig: './webpack.config.js',
+        //     includeModules: true,
+        //     packagerOptions:{ // see here: https://github.com/serverless-heaven/serverless-webpack/issues/396
+        //         scripts: [
+        //             'npm rebuild sharp --target_arch=x64 --target_platform=linux',
+        //         ],
+        //     },
+        // },
+        bundle: {
+            packagerOptions: {
                 scripts: [
-                    'npm rebuild sharp --target_arch=x64 --target_platform=linux',
+                    'rm -rf node_modules/sharp',
+                    'npm install --arch=x64 --platform=linux sharp',
                 ],
             },
         },
@@ -40,7 +48,7 @@ const serverlessConfiguration: AWS = {
         },
     },
     plugins: [
-        'serverless-webpack',
+        'serverless-bundle',
         'serverless-layers',
         'serverless-add-api-key',
         'serverless-domain-manager',
