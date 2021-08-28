@@ -1,5 +1,6 @@
 import * as AWS from 'aws-sdk';
 const Jimp = require("jimp");
+import axios from 'axios';
 
 export class S3Client {
     s3: AWS.S3;
@@ -29,6 +30,21 @@ export class S3Client {
 
         const res = await this.s3.putObject({
             Body: resized,
+            Bucket: this.bucketName,
+            ContentType: 'image/jpeg',
+            Key: `assets/imported/${key}.jpeg`,
+        }).promise()
+
+        return res
+    }
+
+    upload_d = async (imageUrl: string, key: string) => {
+        const imageRes = await axios.get(imageUrl, {responseType: 'arraybuffer'});
+
+        console.log(imageUrl);
+
+        const res = await this.s3.putObject({
+            Body: Buffer.from(imageRes.data),
             Bucket: this.bucketName,
             ContentType: 'image/jpeg',
             Key: `assets/imported/${key}.jpeg`,
