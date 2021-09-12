@@ -79,6 +79,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     console.log('style not determined');
                     continue;
                 }
+                const dateRange = eventRelease.performs.perform.map((r) => r.performDate ).sort()
 
                 const live = await apiClient.fetchLive({
                     title: zen2han(eventRelease.event.mainTitle),
@@ -87,7 +88,8 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     artworkURL: eventRelease.event.imageUrlXls?.imageUrlXl[0]?.imageUrl,
                     hostGroupId: group.id,
                     liveHouse: zen2han(eventRelease.performs.perform[0].venue.venueName),
-                    date: eventRelease.performs.perform[0].performDate,
+                    date: dateRange[0],
+                    endDate: dateRange.length === 1 ? null : dateRange.slice(-1)[0],
                     openAt: eventRelease.performs.perform[0].openTime,
                     startAt: eventRelease.performs.perform[0].performStartTime,
                     piaEventCode: eventRelease.event.eventCode,

@@ -35,10 +35,10 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         // upload artwork url
         let imageUrl = null;
         if (event.body.artworkURL) {
-            // const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
-            // await s3Client.upload(event.body.artworkURL, key);
-            // imageUrl = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${key}.jpeg`;
-            imageUrl = event.body.artworkURL;
+            const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
+            await s3Client.upload(event.body.artworkURL, key);
+            imageUrl = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${key}.jpeg`;
+            // imageUrl = event.body.artworkURL;
         }
 
         // determine live style
@@ -64,6 +64,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
             hostGroupId: performerIds[0],
             liveHouse: event.body.liveHouse,
             date: event.body.date,
+            endDate: null,
             openAt: event.body.openAt,
             startAt: event.body.startAt,
             piaEventCode: event.body.piaEventCode,
