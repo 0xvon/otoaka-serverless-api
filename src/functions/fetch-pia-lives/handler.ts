@@ -111,7 +111,7 @@ const _sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const zen2han =(str: string) => {
     return str.replace(/[！-～]/g, function(s) {
-        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0).replace(/　/g," ");
     });
 }
 
