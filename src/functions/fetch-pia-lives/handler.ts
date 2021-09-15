@@ -80,6 +80,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     continue;
                 }
                 const dateRange = eventRelease.performs.perform.map((r) => r.performDate ).sort()
+                const liveHouse = zen2han(eventRelease.performs.perform.map((r) => r.venue.venueName).join(', '))
 
                 const live = await apiClient.fetchLive({
                     title: zen2han(eventRelease.event.mainTitle),
@@ -87,7 +88,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     price: 5000, // don't use this paramater
                     artworkURL: eventRelease.event.imageUrlXls?.imageUrlXl[0]?.imageUrl,
                     hostGroupId: group.id,
-                    liveHouse: zen2han(eventRelease.performs.perform[0].venue.venueName),
+                    liveHouse: liveHouse,
                     date: dateRange[0],
                     endDate: dateRange.length === 1 ? null : dateRange.slice(-1)[0],
                     openAt: eventRelease.performs.perform[0].openTime,
