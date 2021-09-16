@@ -2,3 +2,4 @@ export { APIClient, CreateGroupRequest, CreateLiveRequest, LiveStyleInput, LiveS
 export { S3Client } from './S3Client';
 export { YouTubeClient } from './YoutubeClient';
 export { PiaClient } from './PiaClient';
+export * as CognitoClient from './CognitoClient';
