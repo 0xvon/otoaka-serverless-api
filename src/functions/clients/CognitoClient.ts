@@ -53,5 +53,6 @@ export const signin = async (username: string, password: string): Promise<string
     };
 
     const response = await cognito.adminInitiateAuth(params).promise().catch(e => { throw e })
-    return response.AuthenticationResult.IdToken!
+    console.log(JSON.stringify(response.AuthenticationResult));
+    return response.AuthenticationResult.AccessToken
 }
