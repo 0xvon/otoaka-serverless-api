@@ -48,7 +48,7 @@ export const signin = async (username: string, password: string): Promise<string
         AuthParameters: {
           'USERNAME': username,
           'PASSWORD': password,
-          SECRET_HASH: crypto.createHmac('sha256', clientSecret).update('symfoware' + clientId).digest('base64'),
+          'SECRET_HASH': crypto.createHmac('sha256', clientSecret).update(username + clientId).digest('base64'),
         },
     };
 
