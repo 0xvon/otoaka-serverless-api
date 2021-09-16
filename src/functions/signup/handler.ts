@@ -12,7 +12,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
     try {
         const idToken = CognitoClient.createUser(event.body.username, event.body.email, event.body.password);
         return formatJSONResponse({
-            idToken: idToken!,
+            idToken: JSON.stringify(idToken),
         });
     } catch(e) {
         return formatJSONResponse(e, 500);
