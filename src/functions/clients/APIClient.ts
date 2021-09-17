@@ -107,8 +107,8 @@ export const getAllGroup = async (idToken: string) => {
     });
     
     const res = await apiAxios.get('/groups?page=1&per=10000');
-    console.log(JSON.stringify(decycle(res.data)));
-    return res.data as Group[];
+    console.log(JSON.stringify(decycle(res.data.items)));
+    return res.data.items as Group[];
 }
 
 export const searchPiaLive = async (params: searchPiaLiveParams, idToken: string) => {
