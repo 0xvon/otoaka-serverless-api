@@ -13,7 +13,7 @@ import schema from './schema';
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     try {
         const idToken = await CognitoClient.createUser(event.body.username, event.body.email, event.body.password);
-        const isSignedUp = APIClient.getSignupStatus(idToken);
+        const isSignedUp = await APIClient.getSignupStatus(idToken);
         console.log(`isSignedUp: ${isSignedUp}`);
 
         const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16);

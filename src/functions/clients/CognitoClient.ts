@@ -8,10 +8,12 @@ const cognitoUserPoolId = process.env.COGNITO_USER_POOL_ID ?? '';
 const clientId = process.env.COGNITO_CLIENT_ID ?? '';
 const clientSecret = process.env.COGNITO_CLIENT_SECRET ?? '';
 
-export const createUser = async (username: string, email: string, password: string) => {
+export const createUser = async (username: string, email: string, password: string): Promise<string> => {
+    const isAlreadySignedIn = await signin(username, password);
+    if (isAlreadySignedIn) { return isAlreadySignedIn; }
     const user = await signup(username, email);
     await setPassword(user.Username, password);
-    return signin(user.Username, password);
+    return await signin(user.Username, password);
 }
 
 export const signup = async (username: string, email: string): Promise<AWS.CognitoIdentityServiceProvider.UserType> => {
@@ -52,7 +54,10 @@ export const signin = async (username: string, password: string): Promise<string
         },
     };
 
-    const response = await cognito.adminInitiateAuth(params).promise().catch(e => { throw e })
-    console.log(JSON.stringify(response.AuthenticationResult));
-    return response.AuthenticationResult.IdToken
+    const response = await cognito.adminInitiateAuth(params).promise().catch(e => {
+        console.log(e);
+        return undefined;
+    })
+    // console.log(JSON.stringify(response.AuthenticationResult));
+    return response.AuthenticationResult.IdToken;
 }
