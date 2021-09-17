@@ -5,6 +5,7 @@ import {
     fetchPiaLives,
     createLive,
     signup,
+    createPost,
 } from './src/functions';
 
 const serverlessConfiguration: AWS = {
@@ -74,7 +75,7 @@ const serverlessConfiguration: AWS = {
             }
         },
     },
-    functions: { createGroup, customOgpHtml, fetchPiaLives, createLive, signup },
+    functions: { createGroup, customOgpHtml, fetchPiaLives, createLive, signup, createPost },
 };
 
 module.exports = serverlessConfiguration;
