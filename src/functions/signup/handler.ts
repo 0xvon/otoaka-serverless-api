@@ -14,6 +14,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
     try {
         const idToken = await CognitoClient.createUser(event.body.username, event.body.email, event.body.password);
         const isSignedUp = APIClient.getSignupStatus(idToken);
+        console.log(`isSignedUp: ${isSignedUp}`);
 
         const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16);
         const imageUrl = await S3Client.upload(event.body.thumbnail_url, key);
