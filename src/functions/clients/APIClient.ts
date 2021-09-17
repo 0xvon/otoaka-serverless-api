@@ -180,7 +180,6 @@ export const getSignupStatus = async (idToken: string) => {
         responseType: 'json',
     });
     const res = await apiAxios.get('/users/get_signup_status');
-    console.log(`isSignedup: ${JSON.stringify(res.data.isSignedup)}`);
     return res.data.isSignedup as boolean;
 }
 
