@@ -18,14 +18,26 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16);
         const imageUrl = await S3Client.upload(event.body.thumbnail_url, key);
 
+        let role: APIClient.RoleInput;
+        if (event.body.role === 'artist') {
+            role = {
+                kind: 'artist',
+                value: {
+                    part: 'manager',
+                },
+            };
+        } else {
+            role = {
+                kind: 'fan',
+                value: {},
+            };
+        }
+
         const request: APIClient.SignupRequest = {
             name: event.body.displayName,
             biography: event.body.biography,
             thumbnailURL: imageUrl,
-            role: {
-                kind: 'artist',
-                value: { part: 'manager' },
-            },
+            role: role,
         };
         const user = isSignedUp
             ? await APIClient.editUserInfo(request, idToken)
