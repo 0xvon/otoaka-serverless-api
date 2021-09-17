@@ -1,11 +1,7 @@
 import axios from 'axios';
 import { decycle } from 'json-cyclic';
 
-
-interface Props {
-    endpoint: string;
-    idToken?: string;
-}
+const endpoint = process.env.ENDPOINT_URL;
 
 export interface CreateGroupRequest {
     name: string;
@@ -33,19 +29,37 @@ interface searchPiaLiveParams {
 export type LiveStyle = 'oneman' | 'battle' | 'festival';
 
 export interface CreateLiveRequest {
-        title: string;
-        style: LiveStyleInput
-        price: number;
-        artworkURL: string | null;
-        hostGroupId: string
-        liveHouse: string | null;
-        date: string | null;
-        endDate: string | null;
-        openAt: string | null;
-        startAt: string | null;
-        piaEventCode: string | null;
-        piaReleaseUrl: string | null;
-        piaEventUrl: string | null;
+    title: string;
+    style: LiveStyleInput
+    price: number;
+    artworkURL: string | null;
+    hostGroupId: string
+    liveHouse: string | null;
+    date: string | null;
+    endDate: string | null;
+    openAt: string | null;
+    startAt: string | null;
+    piaEventCode: string | null;
+    piaReleaseUrl: string | null;
+    piaEventUrl: string | null;
+}
+
+export interface RoleInput {
+    kind: 'fan' | 'artist';
+    value?: string | null;
+}
+
+export interface SignupRequest {
+    name: string;
+    role: RoleInput;
+    biography?: string | null;
+    thumbnailURL?: string | null;
+    sex?: string | null;
+    age?: number | null;
+    liveStyle?: string | null;
+    residence?: string | null;
+    twitterUrl?: string | null
+    instagramUrl?: string | null
 }
 
 export interface Group {
@@ -53,82 +67,128 @@ export interface Group {
     name: string;
 }
 
-export class APIClient {
-    props: Props;
+export const createGroup = async (request: CreateGroupRequest, idToken: string) => {
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    
+    const res = await apiAxios.post('/groups', request);
+    return res;
+}
 
-    constructor(props: Props) {
-        this.props = props;
-    }
+export const getAllGroup = async (idToken: string) => {
+    console.log('calling /groups ...');
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    
+    const res = await apiAxios.get('/groups', {
+        params: {
+            page: 1,
+            per: 10000,
+        },
+    });
+    // console.log(JSON.stringify(decycle(res)));
+    return res.data as Group[];
+}
 
-    createGroup = async (request: CreateGroupRequest) => {
-        const apiAxios = axios.create({
-            baseURL: this.props.endpoint,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            responseType: 'json',
-        });
-        
-        const res = await apiAxios.post('/external/create_group', request);
-        return res;
-    }
+export const searchPiaLive = async (params: searchPiaLiveParams, idToken: string) => {
+    console.log(`calling /external/test_pia_event_release (query: ${params.keyword}) ...`);
 
-    getAllGroup = async () => {
-        console.log('calling /external/groups ...');
-        const apiAxios = axios.create({
-            baseURL: this.props.endpoint,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            responseType: 'json',
-        });
-        
-        const res = await apiAxios.get('/external/groups');
-        // console.log(JSON.stringify(decycle(res)));
-        return res.data as Group[];
-    }
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    
+    const res = await apiAxios.get('/external/test_pia_event_release', { params: params });
+    console.log(JSON.stringify(decycle(res)));
+    return res.data;
+}
 
-    searchPiaLive = async (params: searchPiaLiveParams) => {
-        console.log(`calling /external/test_pia_event_release (query: ${params.keyword}) ...`);
+export const fetchLive = async (request: CreateLiveRequest, idToken: string) => {
+    console.log(`calling /external/fetch_live (title: ${request.title}) ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    
+    const res = await apiAxios.post('/external/fetch_live', request);
+    return res.data;
+}
 
-        const apiAxios = axios.create({
-            baseURL: this.props.endpoint,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            responseType: 'json',
-        });
-        
-        const res = await apiAxios.get('/external/test_pia_event_release', { params: params });
-        console.log(JSON.stringify(decycle(res)));
-        return res.data;
-    }
+export const createLive = async (request: CreateLiveRequest, idToken: string) => {
+    console.log(`calling /external/create_live (title: ${request.title}) ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    
+    const res = await apiAxios.post('/external/create_live', request);
+    return res.data;
+}
 
-    fetchLive = async (request: CreateLiveRequest) => {
-        console.log(`calling /external/fetch_live (title: ${request.title}) ...`);
-        const apiAxios = axios.create({
-            baseURL: this.props.endpoint,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            responseType: 'json',
-        });
-        
-        const res = await apiAxios.post('/external/fetch_live', request);
-        return res.data;
-    }
+export const signup = async (request: SignupRequest, idToken: string) => {
+    console.log(`calling /users/signup ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
 
-    createLive = async (request: CreateLiveRequest) => {
-        console.log(`calling /external/create_live (title: ${request.title}) ...`);
-        const apiAxios = axios.create({
-            baseURL: this.props.endpoint,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            responseType: 'json',
-        });
-        
-        const res = await apiAxios.post('/external/create_live', request);
-        return res.data;
-    }
+    const res = await apiAxios.post('/users/signup', request);
+    return res.data;
+}
+
+export const getSignupStatus = async (idToken: string) => {
+    console.log(`calling /users/get_signup_status ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    const res = await apiAxios.get('/get/get_signup_status');
+    return res.data as boolean;
+}
+
+export const editUserInfo = async (request: SignupRequest, idToken: string) => {
+    console.log(`calling /users/edit_user_info ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+
+    const res = await apiAxios.post('/users/edit_user_info', request);
+    return res.data;
 }

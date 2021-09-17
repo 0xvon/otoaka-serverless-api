@@ -6,22 +6,21 @@ import { middyfy } from '@libs/lambda';
 import { decycle } from 'json-cyclic';
 import {
     APIClient,
-    LiveStyleInput,
+    CognitoClient,
 } from '../clients';
 
-const endpointUrl = process.env.ENDPOINT_URL ?? '';
 const piaApiKey = process.env.PIA_API_KEY ?? '';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
-    const apiClient = new APIClient({ endpoint: endpointUrl });
     try {
-        const groups = await apiClient.getAllGroup();
+        const idToken = await CognitoClient.signin('admin', 'howbeautiful69is');
+        const groups = await APIClient.getAllGroup(idToken);
         for (const group of groups) {
             _sleep(1000);
-            const piaEventResponse = await apiClient.searchPiaLive({
+            const piaEventResponse = await APIClient.searchPiaLive({
                 piaApiKey: piaApiKey,
                 keyword: group.name,
-            });
+            }, idToken);
 
             if (piaEventResponse.searchHeader.resultCount === 0) {
                 console.log('no event release');
@@ -30,7 +29,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
 
             // add each event release to DB
             for (const eventRelease of piaEventResponse.eventReleases.eventRelease) {
-                let style: LiveStyleInput;
+                let style: APIClient.LiveStyleInput;
                 let groupIds = [];
                 for (const perform of eventRelease.performs.perform) {
                     if (perform.appearArtists) {
@@ -82,7 +81,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                 const dateRange = eventRelease.performs.perform.map((r) => r.performDate ).sort()
                 const liveHouse = zen2han(eventRelease.performs.perform.map((r) => r.venue.venueName).join(', '))
 
-                const live = await apiClient.fetchLive({
+                const live = await APIClient.fetchLive({
                     title: zen2han(eventRelease.event.mainTitle),
                     style: style,
                     price: 5000, // don't use this paramater
@@ -96,7 +95,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     piaEventCode: eventRelease.event.eventCode,
                     piaReleaseUrl: eventRelease.release.releaseUrlPc,
                     piaEventUrl: eventRelease.event.eventUrlPc,
-                });
+                }, idToken);
                 
                 console.log(`live is ${JSON.stringify(decycle(live))}`);
             }
