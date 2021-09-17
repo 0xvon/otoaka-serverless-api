@@ -23,7 +23,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
             const thumbnailUrl = item.snippet.thumbnails.high.url ?? '';
             console.log(`thumbnailUrl: ${thumbnailUrl}`);
 
-            const artworkURL = await S3Client.upload_d(thumbnailUrl, event.body.youtube_channel_id);
+            const artworkURL = await S3Client.upload(thumbnailUrl, event.body.youtube_channel_id);
             const req: APIClient.CreateGroupRequest = {
                 name: event.body.name,
                 englishName: null,

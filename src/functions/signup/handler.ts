@@ -24,6 +24,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
             thumbnailURL: imageUrl,
             role: {
                 kind: 'fan',
+                value: {},
             },
         };
         const user = isSignedUp

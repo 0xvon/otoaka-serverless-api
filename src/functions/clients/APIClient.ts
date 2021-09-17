@@ -46,7 +46,12 @@ export interface CreateLiveRequest {
 
 export interface RoleInput {
     kind: 'fan' | 'artist';
-    value?: string | null;
+    value: Fan | Artist;
+}
+
+export interface Fan {}
+export interface Artist {
+    part: string
 }
 
 export interface SignupRequest {
