@@ -174,7 +174,7 @@ export const getSignupStatus = async (idToken: string) => {
         },
         responseType: 'json',
     });
-    const res = await apiAxios.get('/get/get_signup_status');
+    const res = await apiAxios.get('/users/get_signup_status');
     return res.data as boolean;
 }
 
