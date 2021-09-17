@@ -72,6 +72,15 @@ export interface Group {
     name: string;
 }
 
+export interface CreatePostRequest {
+    author: string;
+    live: string;
+    text: string;
+    tracks: any[];
+    groups: Group[];
+    imageUrls: string[];
+}
+
 export const createGroup = async (request: CreateGroupRequest, idToken: string) => {
     const apiAxios = axios.create({
         baseURL: endpoint,
@@ -195,5 +204,20 @@ export const editUserInfo = async (request: SignupRequest, idToken: string) => {
     });
 
     const res = await apiAxios.post('/users/edit_user_info', request);
+    return res.data;
+}
+
+export const createPost = async (request: CreatePostRequest, idToken: string) => {
+    console.log(`calling /users/create_post ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+
+    const res = await apiAxios.post('/users/create_post', request);
     return res.data;
 }
