@@ -106,13 +106,8 @@ export const getAllGroup = async (idToken: string) => {
         responseType: 'json',
     });
     
-    const res = await apiAxios.get('/groups', {
-        params: {
-            page: 1,
-            per: 10000,
-        },
-    });
-    // console.log(JSON.stringify(decycle(res)));
+    const res = await apiAxios.get('/groups?page=1&per=10000');
+    console.log(JSON.stringify(decycle(res.data)));
     return res.data as Group[];
 }
 

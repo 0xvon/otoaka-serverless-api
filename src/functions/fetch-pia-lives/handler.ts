@@ -16,6 +16,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
         const idToken = await CognitoClient.signin('admin', 'howbeautiful69is');
         const groups = await APIClient.getAllGroup(idToken);
         for (const group of groups) {
+            console.log('group iterable');
             _sleep(1000);
             const piaEventResponse = await APIClient.searchPiaLive({
                 piaApiKey: piaApiKey,
