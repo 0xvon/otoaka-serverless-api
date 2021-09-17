@@ -7,33 +7,24 @@ import {
     S3Client,
     YouTubeClient,
     APIClient,
-    CreateGroupRequest
+    CognitoClient,
 } from '../clients';
 import schema from './schema';
 
-const apiKey = process.env.YOUTUBE_API_KEY ?? '';
-const endpointUrl = process.env.ENDPOINT_URL ?? '';
-const bucketName = process.env.S3_BUCKET ?? '';
-
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
-    const youtubeClient = new YouTubeClient({ apiKey: apiKey });
-    const s3Client = new S3Client(bucketName);
-    const apiClient = new APIClient({ endpoint: endpointUrl });
+    try {
+        const listChannelResponse = await YouTubeClient.listChannel(event.body.youtube_channel_id);
+        console.log(listChannelResponse);
 
-    const listChannelResponse = await youtubeClient.listChannel(event.body.youtube_channel_id);
-    console.log(listChannelResponse);
+        if (listChannelResponse.items) {
+            const item = listChannelResponse.items[0];
+            console.log(item);
+            const biography = item.snippet.description;
+            const thumbnailUrl = item.snippet.thumbnails.high.url ?? '';
+            console.log(`thumbnailUrl: ${thumbnailUrl}`);
 
-    if (listChannelResponse.items) {
-        const item = listChannelResponse.items[0];
-        console.log(item);
-        const biography = item.snippet.description;
-        const thumbnailUrl = item.snippet.thumbnails.high.url ?? '';
-        console.log(`thumbnailUrl: ${thumbnailUrl}`);
-
-        const s3PutObjRes = await s3Client.upload_d(thumbnailUrl, event.body.youtube_channel_id);
-        if (s3PutObjRes.ETag) {
-            const artworkURL = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${event.body.youtube_channel_id}.jpeg`;
-            const req: CreateGroupRequest = {
+            const artworkURL = await S3Client.upload(thumbnailUrl, event.body.youtube_channel_id);
+            const req: APIClient.CreateGroupRequest = {
                 name: event.body.name,
                 englishName: null,
                 biography: biography,
@@ -44,15 +35,19 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
                 hometown: null,
             };
 
-            const res = await apiClient.createGroup(req);
+            const idToken = await CognitoClient.signin('admin', 'howbeautiful69is') ;
+            const res = await APIClient.createGroup(req, idToken);
             console.log(res);
         }
-    }
 
-    return formatJSONResponse({
-        message: 'hello',
-        event,
-    });
+        return formatJSONResponse({
+            message: 'hello',
+            event,
+        });
+    } catch(e) {
+        console.log(e);
+        return formatJSONResponse(e, 500);
+    }
 }
 
 export const main = middyfy(handler);

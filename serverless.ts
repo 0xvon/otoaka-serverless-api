@@ -4,6 +4,8 @@ import {
     customOgpHtml,
     fetchPiaLives,
     createLive,
+    signup,
+    createPost,
 } from './src/functions';
 
 const serverlessConfiguration: AWS = {
@@ -63,6 +65,9 @@ const serverlessConfiguration: AWS = {
                             "logs:CreateLogGroup",
                             "logs:CreateLogStream",
                             "logs:PutLogEvents",
+                            "cognito-idp:AdminCreateUser",
+                            "cognito-idp:AdminSetUserPassword",
+                            "cognito-idp:AdminInitiateAuth",
                         ],
                         Resource: "*",
                     },
@@ -70,7 +75,7 @@ const serverlessConfiguration: AWS = {
             }
         },
     },
-    functions: { createGroup, customOgpHtml, fetchPiaLives, createLive },
+    functions: { createGroup, customOgpHtml, fetchPiaLives, createLive, signup, createPost },
 };
 
 module.exports = serverlessConfiguration;

@@ -19,6 +19,9 @@ export default {
     timeout: 300,
     environment: {
         ENDPOINT_URL: process.env.ENDPOINT_URL,
+        COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+        COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID,
+        COGNITO_CLIENT_SECRET: process.env.COGNITO_CLIENT_SECRET,
         S3_BUCKET: process.env.S3_BUCKET,
     },
 }

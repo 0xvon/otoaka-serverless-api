@@ -1,71 +1,37 @@
 import * as AWS from 'aws-sdk';
-const Jimp = require("jimp");
-import axios from 'axios';
+import * as Jimp from 'jimp';
 
-export class S3Client {
-    s3: AWS.S3;
-    bucketName: string;
+const s3 = new AWS.S3();
+const bucketName = process.env.S3_BUCKET ?? '';
 
-    constructor(bucketName: string) {
-        this.s3 = new AWS.S3();
-        this.bucketName = bucketName;
-    }
+export const upload = async (imageUrl: string, key: string) => {
+    console.log(`uploading ${imageUrl} ...`);
 
-    upload = async (imageUrl: string, key: string) => {
-        var typeMatch = imageUrl.match(/\.([^.]*)$/);
-        if (!typeMatch) {
-            console.log("Could not determine the image type.");
-            return;
-        }
-        var imageType = typeMatch[1];
-        if (imageType != "jpg" && imageType != "jpeg" && imageType != "png") {
-            console.log(`Unsupported image type: ${imageType}`);
-            return;
-        }
+    const resized = await resize(imageUrl);
+    console.log('resizing complete!');
 
-        console.log(`uploading ${imageUrl} ...`);
+    await s3.putObject({
+        Body: resized,
+        Bucket: bucketName,
+        ContentType: 'image/jpeg',
+        Key: `assets/imported/${key}.jpeg`,
+    }).promise()
 
-        const resized = await this.resize(imageUrl);
-        console.log('resizing complete!');
+    return `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${key}.jpeg`
+}
 
-        const res = await this.s3.putObject({
-            Body: resized,
-            Bucket: this.bucketName,
-            ContentType: 'image/jpeg',
-            Key: `assets/imported/${key}.jpeg`,
-        }).promise()
-
-        return res
-    }
-
-    upload_d = async (imageUrl: string, key: string) => {
-        const imageRes = await axios.get(imageUrl, {responseType: 'arraybuffer'});
-
-        console.log(imageUrl);
-
-        const res = await this.s3.putObject({
-            Body: Buffer.from(imageRes.data),
-            Bucket: this.bucketName,
-            ContentType: 'image/jpeg',
-            Key: `assets/imported/${key}.jpeg`,
-        }).promise()
-
-        return res
-    }
-
-    resize = async (url: string) => {
-        return new Promise((resolve, reject) => {
-            Jimp.read(url, (err, image) => {
-                if (err) { reject(err) }
-                else {
-                    image
-                        .scaleToFit(400, Jimp.AUTO, Jimp.RESIZE_BEZIER)
-                        .getBuffer(Jimp.MIME_JPEG, (err, data) => {
-                            if (err) { reject(err) }
-                            else { resolve(data) }
-                        })
-                }
-            });
-        })
-    }
+const resize = async (url: string) => {
+    return new Promise((resolve, reject) => {
+        Jimp.read(url, (err, image) => {
+            if (err) { reject(err) }
+            else {
+                image
+                    .scaleToFit(400, Jimp.AUTO, Jimp.RESIZE_BEZIER)
+                    .getBuffer(Jimp.MIME_JPEG, (err, data) => {
+                        if (err) { reject(err) }
+                        else { resolve(data) }
+                    })
+            }
+        });
+    })
 }

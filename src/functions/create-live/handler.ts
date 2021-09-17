@@ -6,20 +6,15 @@ import { middyfy } from '@libs/lambda';
 import {
     S3Client,
     APIClient,
-    LiveStyleInput,
+    CognitoClient,
 } from '../clients';
 import schema from './schema';
 
-const endpointUrl = process.env.ENDPOINT_URL ?? 'http://api-dev.rocketfor.band';
-const bucketName = process.env.S3_BUCKET ?? 'rocket-auth-dev-storage';
-
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
-    const s3Client = new S3Client(bucketName);
-    const apiClient = new APIClient({ endpoint: endpointUrl});
-    // console.log(`event: ${JSON.stringify(event)}`);
     console.log(`event body title: ${event.body.title}`);
     try {
-        const groups = await apiClient.getAllGroup();
+        const idToken = await CognitoClient.signin('admin', 'howbeautiful69is');
+        const groups = await APIClient.getAllGroup(idToken);
         const performerIds = [];
 
         // determine performers
@@ -36,13 +31,11 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         let imageUrl = null;
         if (event.body.artworkURL) {
             const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
-            await s3Client.upload(event.body.artworkURL, key);
-            imageUrl = `https://${bucketName}.s3-ap-northeast-1.amazonaws.com/assets/imported/${key}.jpeg`;
-            // imageUrl = event.body.artworkURL;
+            imageUrl = await S3Client.upload(event.body.artworkURL, key);
         }
 
         // determine live style
-        let style: LiveStyleInput;
+        let style: APIClient.LiveStyleInput;
         if (performerIds.length === 1) {
             style = {
                 kind: 'oneman',
@@ -56,7 +49,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         }
         
         // create live
-        const res = await apiClient.createLive({
+        const res = await APIClient.createLive({
             title: event.body.title,
             style: style,
             price: 5000,
@@ -70,7 +63,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
             piaEventCode: event.body.piaEventCode,
             piaReleaseUrl: null,
             piaEventUrl: null,
-        });
+        }, idToken);
         console.log(res);
         return formatJSONResponse({ result: 'ok' });
     } catch(e) {
