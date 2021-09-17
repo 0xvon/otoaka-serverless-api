@@ -43,21 +43,24 @@ export const setPassword = async (username: string, password: string): Promise<v
 }
 
 export const signin = async (username: string, password: string): Promise<string> => {
-    const params: AWS.CognitoIdentityServiceProvider.AdminInitiateAuthRequest = {
-        UserPoolId: cognitoUserPoolId,
-        ClientId: clientId,
-        AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',
-        AuthParameters: {
-          'USERNAME': username,
-          'PASSWORD': password,
-          'SECRET_HASH': crypto.createHmac('sha256', clientSecret).update(username + clientId).digest('base64'),
-        },
-    };
-
-    const response = await cognito.adminInitiateAuth(params).promise().catch(e => {
-        console.log(e);
+    try {
+        const params: AWS.CognitoIdentityServiceProvider.AdminInitiateAuthRequest = {
+            UserPoolId: cognitoUserPoolId,
+            ClientId: clientId,
+            AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',
+            AuthParameters: {
+              'USERNAME': username,
+              'PASSWORD': password,
+              'SECRET_HASH': crypto.createHmac('sha256', clientSecret).update(username + clientId).digest('base64'),
+            },
+        };
+    
+        const response = await cognito.adminInitiateAuth(params).promise();
+        // console.log(JSON.stringify(response.AuthenticationResult));
+        return response.AuthenticationResult.IdToken;
+    } catch (e) {
+        console.log(`catched, ${e}`);
         return undefined;
-    })
-    // console.log(JSON.stringify(response.AuthenticationResult));
-    return response.AuthenticationResult.IdToken;
+    }
+    
 }
