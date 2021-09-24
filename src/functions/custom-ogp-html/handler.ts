@@ -5,20 +5,20 @@ import { formatHTMLResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import schema from './schema';
 
-const redirectUrl = process.env.REDIRECT_URL ?? 'https://wall-of-death.com';
+const redirectUrl = process.env.REDIRECT_URL ?? 'https://wall-of-death.com/otoaka/';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     console.log(event);
 
     const ogpUrl = event.queryStringParameters['ogp_url'] ?? 'https://wall-of-death.com';
-    const title = event.queryStringParameters['title'] ?? 'ロケバン | 邦ロックシェアSNS';
+    const title = event.queryStringParameters['title'] ?? 'OTOAKA | ライブの感想やセトリを記録・共有しよう';
     console.log(title);
 
     return formatHTMLResponse(generatehtml(ogpUrl, title));
 }
 
 const generatehtml = (ogp_url: string, title: string) => {
-    const description = 'ロケバンで邦ロックを記録しよう';
+    const description = 'ライブの価値を。迫力を。感動を。伝えるのはあなたの役目。';
     const facebookAppId = '313612986723470';
     const twitterId = '@wooruobudesu';
 
