@@ -36,7 +36,7 @@ export interface CreateLiveRequest {
     hostGroupId: string
     liveHouse: string | null;
     date: string | null;
-    endDate: string | null;
+    endDate?: string | null;
     openAt: string | null;
     startAt: string | null;
     piaEventCode: string | null;

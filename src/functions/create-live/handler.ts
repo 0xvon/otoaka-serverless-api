@@ -57,7 +57,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
             hostGroupId: performerIds[0],
             liveHouse: event.body.liveHouse,
             date: event.body.date,
-            endDate: null,
+            endDate: event.body.endDate,
             openAt: event.body.openAt,
             startAt: event.body.startAt,
             piaEventCode: event.body.piaEventCode,
