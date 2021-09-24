@@ -8,6 +8,7 @@ export default {
         date: { type: 'string' },
         openAt: { type: 'string' },
         startAt: { type: 'string' },
+        endDate: { type: 'string' },
         piaEventCode: { type: 'string' },
     },
     required: ['title', 'performers', 'liveHouse', 'date', 'openAt', 'startAt']
