@@ -80,7 +80,8 @@ const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
                     continue;
                 }
                 const dateRange = eventRelease.performs.perform.map((r) => r.performDate ).sort()
-                const liveHouse = zen2han(eventRelease.performs.perform.map((r) => r.venue.venueName).join(', '))
+                let liveHouse = zen2han(eventRelease.performs.perform[0].venue.venueName)
+                if (eventRelease.performs.perform.length > 1) { liveHouse = liveHouse + "..."}
 
                 const live = await APIClient.fetchLive({
                     title: zen2han(eventRelease.event.mainTitle),
