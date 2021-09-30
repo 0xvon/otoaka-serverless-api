@@ -11,14 +11,14 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
     console.log(event);
 
     const ogpUrl = event.queryStringParameters['ogp_url'] ?? 'https://wall-of-death.com';
-    const title = event.queryStringParameters['title'] ?? 'OTOAKA | ライブの感想やセトリを記録・共有しよう';
+    const title = event.queryStringParameters['title'] ?? 'OTOAKA | ライブ参戦履歴管理アプリ';
     console.log(title);
 
     return formatHTMLResponse(generatehtml(ogpUrl, title));
 }
 
 const generatehtml = (ogp_url: string, title: string) => {
-    const description = 'ライブの価値を。迫力を。感動を。伝えるのはあなたの役目。';
+    const description = 'ライブに行く。感想を書いて参戦履歴を記録する。感想を見返して余韻に浸る。そしてまた、ライブに行く。身体はライブを求める。';
     const facebookAppId = '313612986723470';
     const twitterId = '@wooruobudesu';
 
