@@ -144,7 +144,7 @@ export const fetchLive = async (request: CreateLiveRequest, idToken: string) => 
 }
 
 export const createLive = async (request: CreateLiveRequest, idToken: string) => {
-    console.log(`calling /external/create_live (title: ${request.title}) ...`);
+    console.log(`calling /lives (title: ${request.title}) ...`);
     const apiAxios = axios.create({
         baseURL: endpoint,
         headers: {
@@ -154,7 +154,7 @@ export const createLive = async (request: CreateLiveRequest, idToken: string) =>
         responseType: 'json',
     });
     
-    const res = await apiAxios.post('/external/create_live', request);
+    const res = await apiAxios.post('/lives', request);
     return res.data;
 }
 
