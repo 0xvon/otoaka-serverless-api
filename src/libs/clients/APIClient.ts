@@ -216,3 +216,31 @@ export const createPost = async (request: CreatePostRequest, idToken: string) =>
     const res = await apiAxios.post('/users/create_post', request);
     return res.data;
 }
+
+export const notifyUpcomingLives = async (idToken: string) => {
+    console.log(`calling /external/notify_upcomning_lives ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    const res = await apiAxios.get('/external/notify_upcomning_lives');
+    return res.data as string;
+}
+
+export const notifyPastLives = async (idToken: string) => {
+    console.log(`calling /external/notify_past_lives ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    const res = await apiAxios.get('/external/notify_past_lives');
+    return res.data as string;
+}

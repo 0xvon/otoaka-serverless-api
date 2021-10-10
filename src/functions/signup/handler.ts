@@ -7,7 +7,7 @@ import {
     CognitoClient,
     APIClient,
     S3Client,
-} from '../clients';
+} from '@libs/clients';
 import schema from './schema';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {

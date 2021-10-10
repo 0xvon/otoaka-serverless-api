@@ -7,7 +7,7 @@ import { decycle } from 'json-cyclic';
 import {
     APIClient,
     CognitoClient,
-} from '../clients';
+} from '@libs/clients';
 
 const piaApiKey = process.env.PIA_API_KEY ?? '';
 
