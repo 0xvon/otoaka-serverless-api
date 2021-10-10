@@ -6,7 +6,7 @@ import { middyfy } from '@libs/lambda';
 import {
     CognitoClient,
     APIClient,
-} from '../clients';
+} from '@libs/clients';
 import schema from './schema';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
