@@ -227,7 +227,7 @@ export const notifyUpcomingLives = async (idToken: string) => {
         },
         responseType: 'json',
     });
-    const res = await apiAxios.get('/external/notify_upcomning_lives');
+    const res = await apiAxios.get('/external/notify_upcoming_lives');
     return res.data as string;
 }
 
