@@ -96,7 +96,7 @@ export const createGroup = async (request: CreateGroupRequest, idToken: string) 
 }
 
 export const getAllGroup = async (idToken: string) => {
-    console.log('calling /groups ...');
+    console.log('calling /external/groups ...');
     const apiAxios = axios.create({
         baseURL: endpoint,
         headers: {
@@ -106,9 +106,9 @@ export const getAllGroup = async (idToken: string) => {
         responseType: 'json',
     });
     
-    const res = await apiAxios.get('/groups?page=1&per=10000');
-    console.log(JSON.stringify(decycle(res.data.items)));
-    return res.data.items.map((item) => item.group) as Group[];
+    const res = await apiAxios.get('/external/groups');
+    console.log(JSON.stringify(decycle(res.data)));
+    return res.data as Group[];
 }
 
 export const searchPiaLive = async (params: searchPiaLiveParams, idToken: string) => {
