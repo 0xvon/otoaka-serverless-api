@@ -52,7 +52,7 @@ jobs:
               env:
                   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  ENDPOINT_URL: http://api.rocketfor.band
+                  ENDPOINT_URL: https://api.rocketfor.band
                   PIA_API_KEY: ${{ secrets.PIA_API_KEY }}
                   PIA_ENDPOINT_URL: http://search-api.pia.jp
                   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
