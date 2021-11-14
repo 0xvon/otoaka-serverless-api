@@ -30,9 +30,9 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         // upload artwork url
         let imageUrl = null;
         if (event.body.artworkURL) {
-            // const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
-            // imageUrl = await S3Client.upload(event.body.artworkURL, key);
-            imageUrl = event.body.artworkURL;
+            const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
+            imageUrl = await S3Client.upload(event.body.artworkURL, key);
+            // imageUrl = event.body.artworkURL;
         }
 
         // determine live style
