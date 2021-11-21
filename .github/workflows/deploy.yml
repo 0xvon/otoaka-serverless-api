@@ -27,22 +27,22 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: ap-northeast-1
             
-            - name: deploy dev
-              if: github.ref == 'refs/heads/develop'
-              uses: serverless/github-action@master
-              with:
-                  args: deploy --verbose --stage dev
-              env:
-                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  ENDPOINT_URL: http://api-dev.rocketfor.band
-                  PIA_API_KEY: ${{ secrets.PIA_API_KEY }}
-                  PIA_ENDPOINT_URL: http://search-api.pia.jp
-                  YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-                  COGNITO_USER_POOL_ID: ${{ secrets.COGNITO_USER_POOL_ID_DEV }}
-                  COGNITO_CLIENT_ID: ${{ secrets.COGNITO_CLIENT_ID_DEV }}
-                  COGNITO_CLIENT_SECRET: ${{ secrets.COGNITO_CLIENT_SECRET_DEV }}
-                  S3_BUCKET: rocket-auth-dev-storage
+            # - name: deploy dev
+            #   if: github.ref == 'refs/heads/develop'
+            #   uses: serverless/github-action@master
+            #   with:
+            #       args: deploy --verbose --stage dev
+            #   env:
+            #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            #       ENDPOINT_URL: http://api-dev.rocketfor.band
+            #       PIA_API_KEY: ${{ secrets.PIA_API_KEY }}
+            #       PIA_ENDPOINT_URL: http://search-api.pia.jp
+            #       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+            #       COGNITO_USER_POOL_ID: ${{ secrets.COGNITO_USER_POOL_ID_DEV }}
+            #       COGNITO_CLIENT_ID: ${{ secrets.COGNITO_CLIENT_ID_DEV }}
+            #       COGNITO_CLIENT_SECRET: ${{ secrets.COGNITO_CLIENT_SECRET_DEV }}
+            #       S3_BUCKET: rocket-auth-dev-storage
 
             - name: deploy
               if: github.ref == 'refs/heads/master'
