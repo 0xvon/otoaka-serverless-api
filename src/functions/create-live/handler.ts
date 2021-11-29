@@ -4,7 +4,7 @@ import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import {
-    S3Client,
+    // S3Client,
     APIClient,
     CognitoClient,
 } from '@libs/clients';
