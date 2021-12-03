@@ -4,7 +4,7 @@ import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
 import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import {
-    S3Client,
+    // S3Client,
     APIClient,
     CognitoClient,
 } from '@libs/clients';
@@ -30,8 +30,9 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
         // upload artwork url
         let imageUrl = null;
         if (event.body.artworkURL) {
-            const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
-            imageUrl = await S3Client.upload(event.body.artworkURL, key);
+            // const key = new Date().getTime().toString(16)  + Math.floor(1000 * Math.random()).toString(16)
+            // imageUrl = await S3Client.upload(event.body.artworkURL, key);
+            imageUrl = event.body.artworkURL;
         }
 
         // determine live style
