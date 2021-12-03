@@ -1,14 +1,5 @@
 import type { AWS } from '@serverless/typescript';
-import {
-    createGroup,
-    customOgpHtml,
-    fetchPiaLives,
-    createLive,
-    signup,
-    createPost,
-    notifyUpcomingLives,
-    notifyPastLives,
-} from './src/functions';
+import * as functions from './src/functions';
 
 const serverlessConfiguration: AWS = {
     service: 'rocket-serverless-api',
@@ -77,7 +68,7 @@ const serverlessConfiguration: AWS = {
             }
         },
     },
-    functions: { createGroup, customOgpHtml, fetchPiaLives, createLive, signup, createPost, notifyUpcomingLives, notifyPastLives },
+    functions: functions,
 };
 
 module.exports = serverlessConfiguration;

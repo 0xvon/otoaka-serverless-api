@@ -81,6 +81,11 @@ export interface CreatePostRequest {
     imageUrls: string[];
 }
 
+export interface SendNotificationRequest {
+    message: string;
+    segment?: string | null;
+}
+
 export const createGroup = async (request: CreateGroupRequest, idToken: string) => {
     const apiAxios = axios.create({
         baseURL: endpoint,
@@ -242,5 +247,19 @@ export const notifyPastLives = async (idToken: string) => {
         responseType: 'json',
     });
     const res = await apiAxios.get('/external/notify_past_lives');
+    return res.data as string;
+}
+
+export const sendNotification = async (request: SendNotificationRequest, idToken: string) => {
+    console.log(`calling /external/notification ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    const res = await apiAxios.post('/users/notification', request);
     return res.data as string;
 }
