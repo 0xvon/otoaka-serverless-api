@@ -48,6 +48,10 @@ const generatehtml = (ogp_url: string, title: string, redirectUrl: string) => {
     <meta content="${title}" property="twitter:title" />
     <meta content="${description}" property="twitter:description" />
     <meta content="${ogp_url}" property="twitter:image" />
+    <meta
+        name="apple-itunes-app"
+        content="app-id=1550896325, app-argument=https://wall-of-death.com/otoaka"
+    />
     <script type="text/javascript">
         window.onload = function() {
             window.location.replace("${redirectUrl}");
