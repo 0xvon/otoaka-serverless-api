@@ -19,8 +19,6 @@ export default {
     timeout: 300,
     environment: {
         ENDPOINT_URL: process.env.ENDPOINT_URL,
-        PIA_API_KEY: process.env.PIA_API_KEY,
-        PIA_ENDPOINT_URL: process.env.PIA_ENDPOINT_URL,
         YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
         COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
         COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID,

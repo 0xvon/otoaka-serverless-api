@@ -19,13 +19,6 @@ export interface LiveStyleInput {
     value: string | string[]; // group id
 }
 
-interface searchPiaLiveParams {
-    piaApiKey: string;
-    keyword?: string;
-    sort?: string;
-    get_count?: number;
-}
-
 export type LiveStyle = 'oneman' | 'battle' | 'festival';
 
 export interface CreateLiveRequest {
@@ -114,38 +107,6 @@ export const getAllGroup = async (idToken: string) => {
     const res = await apiAxios.get('/external/groups');
     console.log(JSON.stringify(decycle(res.data)));
     return res.data as Group[];
-}
-
-export const searchPiaLive = async (params: searchPiaLiveParams, idToken: string) => {
-    console.log(`calling /external/test_pia_event_release (query: ${params.keyword}) ...`);
-
-    const apiAxios = axios.create({
-        baseURL: endpoint,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${idToken}`,
-        },
-        responseType: 'json',
-    });
-    
-    const res = await apiAxios.get('/external/test_pia_event_release', { params: params });
-    console.log(JSON.stringify(decycle(res)));
-    return res.data;
-}
-
-export const fetchLive = async (request: CreateLiveRequest, idToken: string) => {
-    console.log(`calling /external/fetch_live (title: ${request.title}) ...`);
-    const apiAxios = axios.create({
-        baseURL: endpoint,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${idToken}`,
-        },
-        responseType: 'json',
-    });
-    
-    const res = await apiAxios.post('/external/fetch_live', request);
-    return res.data;
 }
 
 export const createLive = async (request: CreateLiveRequest, idToken: string) => {
