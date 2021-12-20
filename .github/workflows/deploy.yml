@@ -56,3 +56,6 @@ jobs:
                   COGNITO_CLIENT_ID: ${{ secrets.COGNITO_CLIENT_ID }}
                   COGNITO_CLIENT_SECRET: ${{ secrets.COGNITO_CLIENT_SECRET }}
                   S3_BUCKET: rocket-auth-storage
+                  AUTH0_DOMAIN: https://rocket.jp.auth0.com
+                  AUTH0_CLIENT_ID: oSt3IUHX3Pnk4tr68DbHZUnwmJPoTHZ6
+                  AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
