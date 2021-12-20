@@ -5,13 +5,13 @@ import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import {
     APIClient,
-    CognitoClient,
+    Auth0Client,
 } from '@libs/clients';
 import schema from './schema';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     try {
-        const idToken = await CognitoClient.signin('admin', 'howbeautiful69is');
+        const idToken = await Auth0Client.signin('admin', 'howbeautiful69!s');
         const response = await APIClient.sendNotification({
             message: event.body.message,
             segment: event.body.segment,

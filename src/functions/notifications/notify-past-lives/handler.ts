@@ -5,12 +5,12 @@ import { formatJSONResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import {
     APIClient,
-    CognitoClient,
+    Auth0Client,
 } from '@libs/clients';
 
 const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
     try {
-        const idToken = await CognitoClient.signin('admin', 'howbeautiful69is');
+        const idToken = await Auth0Client.signin('admin', 'howbeautiful69!s');
         const response = await APIClient.notifyPastLives(idToken);
         return formatJSONResponse({ result: response });
     } catch(e) {

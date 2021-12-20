@@ -7,7 +7,6 @@ import {
     S3Client,
     YouTubeClient,
     APIClient,
-    // CognitoClient,
     Auth0Client,
 } from '@libs/clients';
 import schema from './schema';
@@ -36,9 +35,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
                 hometown: null,
             };
 
-            // const idToken = await CognitoClient.signin('admin', 'howbeautiful69is');
             const idToken = await Auth0Client.signin('admin', 'howbeautiful69!s');
-            console.log(`idToken is ${idToken}`);
 
             const res = await APIClient.createGroup(req, idToken);
             console.log(res);
