@@ -221,6 +221,6 @@ export const sendNotification = async (request: SendNotificationRequest, idToken
         },
         responseType: 'json',
     });
-    const res = await apiAxios.post('/users/notification', request);
+    const res = await apiAxios.post('/external/notification', request);
     return res.data as string;
 }
