@@ -224,3 +224,16 @@ export const sendNotification = async (request: SendNotificationRequest, idToken
     const res = await apiAxios.post('/external/notification', request);
     return res.data as string;
 }
+
+export const entryGroup = async (groupId: string, idToken: string) => {
+    console.log(`calling /external/entry_group ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    await apiAxios.post('/external/entry_group', groupId);
+}
