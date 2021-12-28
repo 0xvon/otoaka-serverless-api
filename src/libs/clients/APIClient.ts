@@ -235,5 +235,5 @@ export const entryGroup = async (groupId: string, idToken: string) => {
         },
         responseType: 'json',
     });
-    await apiAxios.post('/external/entry_group', groupId);
+    await apiAxios.post('/external/entry_group', { groupId: groupId });
 }
