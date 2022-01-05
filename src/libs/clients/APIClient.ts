@@ -79,6 +79,15 @@ export interface SendNotificationRequest {
     segment?: string | null;
 }
 
+export interface CreateSocialTipEventRequest {
+    liveId: string;
+    title: string;
+    description: string;
+    relatedLink: string | null;
+    since: Date;
+    until: Date;
+}
+
 export const createGroup = async (request: CreateGroupRequest, idToken: string) => {
     const apiAxios = axios.create({
         baseURL: endpoint,
@@ -236,4 +245,17 @@ export const entryGroup = async (groupId: string, idToken: string) => {
         responseType: 'json',
     });
     await apiAxios.post('/external/entry_group', { groupId: groupId });
+}
+
+export const createSocialTipEvent = async (request: CreateSocialTipEventRequest, idToken: string) => {
+    console.log(`calling /social_tips/events/create ...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    await apiAxios.post('/social_tips/events/create', request);
 }
