@@ -84,8 +84,8 @@ export interface CreateSocialTipEventRequest {
     title: string;
     description: string;
     relatedLink: string | null;
-    since: Date;
-    until: Date;
+    since: string; // ISO Formatted date string
+    until: string; // ISO Formatted date string
 }
 
 export const createGroup = async (request: CreateGroupRequest, idToken: string) => {

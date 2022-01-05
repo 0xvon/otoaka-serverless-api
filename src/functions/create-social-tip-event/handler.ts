@@ -16,8 +16,8 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
             title: event.body.title,
             description: event.body.description,
             relatedLink: event.body.relatedLink,
-            since: new Date(event.body.since),
-            until: new Date(event.body.until),
+            since: event.body.since,
+            until: event.body.until,
         };
 
         const idToken = await Auth0Client.signin('admin', 'howbeautiful69!s');
