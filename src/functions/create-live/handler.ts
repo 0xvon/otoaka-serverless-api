@@ -66,7 +66,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
             piaEventUrl: null,
         }, idToken);
         console.log(res);
-        return formatJSONResponse({ result: 'ok' });
+        return formatJSONResponse({ res });
     } catch(e) {
         console.log(e);
         return formatJSONResponse(e, 500);
