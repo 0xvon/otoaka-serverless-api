@@ -38,9 +38,9 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
             const idToken = await Auth0Client.signin('admin', 'howbeautiful69!s');
 
             const res = await APIClient.createGroup(req, idToken);
-            console.log(res);
+            console.log(res.data);
 
-            return formatJSONResponse({ res });
+            return formatJSONResponse(res.data);
         }
 
         return formatJSONResponse({
