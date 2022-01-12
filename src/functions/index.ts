@@ -1,5 +1,6 @@
 export { default as createGroup } from './create-group';
 export { default as createLive } from './create-live';
+export { default as fetchLive } from './fetch-live';
 export { default as entryGroup } from './entry-group';
 export { default as createSocialTipEvent } from './create-social-tip-event';
 

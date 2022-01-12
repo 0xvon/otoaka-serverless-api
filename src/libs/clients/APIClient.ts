@@ -133,6 +133,24 @@ export const createLive = async (request: CreateLiveRequest, idToken: string) =>
     return res.data;
 }
 
+export const fetchLive = async (name: string, from: string, idToken: string) => {
+    console.log(`calling /external/fetch_live (artist: ${name})...`);
+    const apiAxios = axios.create({
+        baseURL: endpoint,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`,
+        },
+        responseType: 'json',
+    });
+    
+    const res = await apiAxios.post('/external/fetch_live', {
+        name: name,
+        from: from,
+    });
+    return res.data;
+}
+
 export const signup = async (request: SignupRequest, idToken: string) => {
     console.log(`calling /users/signup ...`);
     const apiAxios = axios.create({
