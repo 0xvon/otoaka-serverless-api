@@ -17,7 +17,8 @@ export default {
         }
     ],
     environment: {
-        ENDPOINT_URL: process.env.ENDPOINT_URL,
+        // ENDPOINT_URL: process.env.ENDPOINT_URL,
+        ENDPOINT_URL: 'https://api-v2.rocketfor.band',
         YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
         COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
         COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID,
