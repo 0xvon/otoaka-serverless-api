@@ -1,10 +1,15 @@
 ## Rocket Serverless API
 
-Serverless Application
-- create group
-- create live
-- custom ogp html
-- fetch pia lives
+サーバーサイドAPIを叩くためのServerless Application
+
+|||
+|---|---|
+|CreateGroup|Groupの作成|
+|CreateLive|Liveの作成|
+|CreateSocialTipEvent|SocialTipEventの作成|
+|CustomOgpHtml|動的なOGP・リダイレクト先を返すHTML|
+|EntryGroup|EntryGroupの作成|
+|Notifications|各種push通知の送信|
 
 ## Dependencies
 
@@ -25,7 +30,7 @@ $ npm i
 $ sls deploy
 ```
 
-## Execute in local
+## Execute Locally
 
 ```
 $ sls offline start --stage local
