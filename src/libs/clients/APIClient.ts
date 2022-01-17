@@ -88,6 +88,11 @@ export interface CreateSocialTipEventRequest {
     until: string; // ISO Formatted date string
 }
 
+export interface FetchLiveRequest {
+    name: string;
+    from?: string;
+}
+
 export const createGroup = async (request: CreateGroupRequest, idToken: string) => {
     const apiAxios = axios.create({
         baseURL: endpoint,
@@ -133,8 +138,8 @@ export const createLive = async (request: CreateLiveRequest, idToken: string) =>
     return res.data;
 }
 
-export const fetchLive = async (name: string, from: string, idToken: string) => {
-    console.log(`calling /external/fetch_live (artist: ${name})...`);
+export const fetchLive = async (request: FetchLiveRequest, idToken: string) => {
+    console.log(`calling /external/fetch_live (artist: ${request.name})...`);
     const apiAxios = axios.create({
         baseURL: endpoint,
         headers: {
@@ -144,10 +149,7 @@ export const fetchLive = async (name: string, from: string, idToken: string) => 
         responseType: 'json',
     });
     
-    const res = await apiAxios.post('/external/fetch_live', {
-        name: name,
-        from: from,
-    });
+    const res = await apiAxios.post('/external/fetch_live', request);
     return res.data;
 }
 

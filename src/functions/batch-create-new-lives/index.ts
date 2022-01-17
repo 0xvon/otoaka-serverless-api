@@ -1,4 +1,3 @@
-import schema from './schema';
 import { handlerPath } from '@libs/handlerResolver';
 
 export default {
@@ -7,15 +6,11 @@ export default {
         {
             http: {
                 method: 'post',
-                path: 'fetch_live',
-                request: {
-                    schema: {
-                        'application/json': schema
-                    }
-                }
-            }
+                path: 'batch_create_new_lives',
+            },
         }
     ],
+    timeout: 300,
     environment: {
         ENDPOINT_URL: process.env.ENDPOINT_URL,
         YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,

@@ -7,19 +7,16 @@ import {
     APIClient,
     Auth0Client,
 } from '@libs/clients';
-import schema from './schema';
 
-const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+const handler: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
     try {
         const idToken = await Auth0Client.signin('admin', 'howbeautiful69!s');
 
-        const res = await APIClient.fetchLive({
-            name: event.body.name,
-            from: event.body.from,
-        } , idToken);
-        console.log(res.data);
-
-        return formatJSONResponse(res.data);
+        const groups = await APIClient.getAllGroup(idToken);
+        for (const group of groups) {
+            APIClient.fetchLive({ name: group.name }, idToken);
+        }
+        return formatJSONResponse({ res: 'ok' });
     } catch(e) {
         console.log(e);
         return formatJSONResponse(e, 500);
